@@ -2,6 +2,7 @@ import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import { loginUser } from "../../firebase";
+import { goHome } from "../../utils";
 import { TopBar } from "../components";
 
 function Login(props) {
@@ -12,6 +13,7 @@ function Login(props) {
     await loginUser(email, password);
     setEmail("");
     setPassword("");
+    goHome(props.navigation)
   }
 
   return (

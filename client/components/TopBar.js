@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Appbar, Button, Modal, Portal, Text } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import { goAbout, goHome, goLogin, goRegister } from "../../utils";
+import { logoutUser } from "../../firebase";
 
 function TopBar({ navigation }) {
   const [visible, setVisible] = useState(false);
@@ -52,6 +53,14 @@ function TopBar({ navigation }) {
             }}
           >
             ABOUT
+          </Button>
+          <Button
+            onPress={() => {
+              logoutUser();
+              hideModal();
+            }}
+          >
+            LOGOUT
           </Button>
         </Modal>
       </Portal>

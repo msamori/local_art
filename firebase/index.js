@@ -1,9 +1,11 @@
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "./config.js";
+// export { auth, db } from "./config.js";
 
 async function createNewUser(email, password) {
   try {
@@ -42,6 +44,13 @@ async function writeUserDataInFirestore(uid, email) {
   }
 }
 
+async function getLoggedInUserData(userId) {
+  const docRef = doc(db, "users", userId);
+  const docSnap = await getDoc(docRef);
+  const userData = docSnap.data();
+  return userData;
+}
+
 async function loginUser(email, password) {
   try {
     await signInWithEmailAndPassword(auth, email, password);
@@ -61,4 +70,21 @@ async function loginUser(email, password) {
   }
 }
 
-export { createNewUser, loginUser };
+async function logoutUser() {
+  try {
+    const user = auth.currentUser;
+    if (user) {
+      const docRef = doc(db, "users", user.uid);
+      const data = await getLoggedInUserData(user.uid);
+      data.lastLogout = Date.now();
+      await updateDoc(docRef, data);
+      signOut(auth);
+    } else {
+      return;
+    }
+  } catch (error) {
+    console.error("logoutUser error:", logoutUser);
+  }
+}
+
+export { createNewUser, getLoggedInUserData, loginUser, logoutUser };

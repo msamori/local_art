@@ -2,10 +2,10 @@ import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
-import { About, Home, Login, Register } from "./client/screens"
+import { About, Home, Login, Register } from "./client/screens";
+import { Provider } from "./utils";
 
 export default function App() {
-
   const Stack = createNativeStackNavigator();
 
   const theme = {
@@ -16,17 +16,18 @@ export default function App() {
       ...DefaultTheme.colors,
       primary: "purple",
       background: "black",
-      text: "white"
+      text: "white",
     },
   };
 
   const navOptions = {
     headerShown: false,
-    gestureEnabled: true
-    }
+    gestureEnabled: true,
+  };
 
   return (
-    <PaperProvider theme={theme}>
+    <Provider>
+      <PaperProvider theme={theme}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={navOptions}>
             <Stack.Screen name="Home" component={Home} />
@@ -36,5 +37,6 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
+    </Provider>
   );
 }

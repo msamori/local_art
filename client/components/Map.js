@@ -1,21 +1,17 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import MapView from "react-native-maps";
+import { Context } from "../../utils";
 
 
 function Map() {
 
-  const [mapRegion, setMapRegion] = useState({
-    latitude: 40.85209694527278,
-    longitude: -73.94126596326808,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
-  })
+  const globalState = useContext(Context);
 
   return (
     <MapView
         style={styles.map}
-        initialRegion={mapRegion}
+        initialRegion={globalState.mapRegion}
       ></MapView>
   )
 }
