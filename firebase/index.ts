@@ -4,8 +4,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { auth, db } from "./config.js";
-// export { auth, db } from "./config.js";
+import { auth, db } from "./config";
 
 async function createNewUser(email, password) {
   try {
