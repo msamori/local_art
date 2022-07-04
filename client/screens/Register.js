@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import { createNewUser } from "../../firebase";
-import { TopBar } from "../components/TopBar";
+import { TopBar } from "../components";
 
 function Register(props) {
   const [email, setEmail] = useState("");

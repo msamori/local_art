@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
-import { TopBar } from "../components/TopBar";
+import { TopBar } from "../components";
 
 function About(props) {
   return (
