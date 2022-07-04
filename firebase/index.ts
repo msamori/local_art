@@ -5,7 +5,7 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "./config";
-import { User } from "../utils/types";
+import { UserData } from "../utils/types";
 async function createNewUser(email: string, password: string) {
   try {
     const userCredential = await createUserWithEmailAndPassword(
@@ -30,7 +30,7 @@ async function createNewUser(email: string, password: string) {
 
 async function writeUserDataInFirestore(uid: string, email: string) {
   try {
-    const data: User = {
+    const data: UserData = {
       id: uid,
       email,
       lastLogin: Date.now(),
@@ -86,4 +86,4 @@ async function logoutUser() {
   }
 }
 
-export { createNewUser, getLoggedInUserData, loginUser, logoutUser, User };
+export { createNewUser, getLoggedInUserData, loginUser, logoutUser };

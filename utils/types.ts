@@ -5,11 +5,11 @@ interface MapRegion {
   longitudeDelta: number;
 }
 
-interface User {
+interface UserData {
   id: string;
   email: string;
   lastLogin?: number;
   lastLogout?: number;
 }
 
-export { MapRegion, User };
+export { MapRegion, UserData };
