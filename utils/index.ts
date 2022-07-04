@@ -1,4 +1,4 @@
-export {Context, Provider} from "./state";
+export { Context, Provider } from "./state";
 
 function goAbout(navigation) {
   navigation.navigate("About");

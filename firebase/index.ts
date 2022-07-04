@@ -4,10 +4,9 @@ import {
   signOut,
 } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { auth, db } from "./config.js";
-// export { auth, db } from "./config.js";
-
-async function createNewUser(email, password) {
+import { auth, db } from "./config";
+import { User } from "../utils/types";
+async function createNewUser(email: string, password: string) {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -29,9 +28,9 @@ async function createNewUser(email, password) {
   }
 }
 
-async function writeUserDataInFirestore(uid, email) {
+async function writeUserDataInFirestore(uid: string, email: string) {
   try {
-    const data = {
+    const data: User = {
       id: uid,
       email,
       lastLogin: Date.now(),
@@ -44,14 +43,14 @@ async function writeUserDataInFirestore(uid, email) {
   }
 }
 
-async function getLoggedInUserData(userId) {
+async function getLoggedInUserData(userId: string) {
   const docRef = doc(db, "users", userId);
   const docSnap = await getDoc(docRef);
   const userData = docSnap.data();
   return userData;
 }
 
-async function loginUser(email, password) {
+async function loginUser(email: string, password: string) {
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
@@ -87,4 +86,4 @@ async function logoutUser() {
   }
 }
 
-export { createNewUser, getLoggedInUserData, loginUser, logoutUser };
+export { createNewUser, getLoggedInUserData, loginUser, logoutUser, User };
