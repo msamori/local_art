@@ -11,9 +11,9 @@ const Provider = ({ children }) => {
     longitude: -73.94126596326808,
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
-  })
+  });
 
-  const [currentUser, setCurrentUser] = useState({})
+  const [currentUser, setCurrentUser] = useState({});
 
   async function currentUserListener() {
     try {
@@ -34,9 +34,9 @@ const Provider = ({ children }) => {
 
   useEffect(() => {
     currentUserListener();
-    return ()=>{
+    return () => {
       setCurrentUser({});
-    }
+    };
   }, []);
 
   const context = {
