@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { Dimensions, View, StyleSheet } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import { loginUser } from "../../firebase";
 import { goHome } from "../../utils";
@@ -19,6 +19,7 @@ function Login(props) {
   return (
     <View style={styles.container}>
       <TopBar navigation={props.navigation} />
+      <View style={styles.inputs}>
       <TextInput
         mode="outlined"
         outlineColor="purple"
@@ -39,6 +40,7 @@ function Login(props) {
         autoCapitalize="none"
       />
       <Button onPress={() => onLoginPress()}>Login</Button>
+      </View>
     </View>
   );
 }
@@ -49,6 +51,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "black",
-    justifyContent: "center",
+    justifyContent: "space-between"
   },
+  inputs: {
+    flex: 1,
+    justifyContent: "center",
+    top: Dimensions.get("window").height * .10,
+  }
 });

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Appbar, Button, Modal, Portal, Text } from "react-native-paper";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import { goAbout, goHome, goLogin, goRegister } from "../../utils";
 import { logoutUser } from "../../firebase";
 
@@ -11,7 +11,7 @@ function TopBar({ navigation }) {
   const hideModal = () => setVisible(false);
 
   return (
-    <>
+    <View>
       <Appbar style={styles.top}>
         <Text> Local Art </Text>
         <Appbar.Action icon="menu" onPress={showModal} />
@@ -64,7 +64,7 @@ function TopBar({ navigation }) {
           </Button>
         </Modal>
       </Portal>
-    </>
+    </View>
   );
 }
 
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    top: 30,
+    top: Dimensions.get("window").height * .05,
+    height: Dimensions.get("window").height * .05,
   },
 });

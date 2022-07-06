@@ -1,7 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase/config";
+import {
+  collection,
+  query,
+  onSnapshot,
+} from "firebase/firestore";
+import { auth, db } from "../firebase/config";
 import { getLoggedInUserData } from "../firebase";
+
 
 const Context = createContext();
 
@@ -33,8 +39,9 @@ const Provider = ({ children }) => {
   }
 
   useEffect(() => {
-    currentUserListener();
+    const unsubscribeCurrentUserListener = currentUserListener();
     return () => {
+      unsubscribeCurrentUserListener();
       setCurrentUser({});
     };
   }, []);
@@ -42,7 +49,7 @@ const Provider = ({ children }) => {
   const context = {
     currentUser,
     mapRegion,
-    setMapRegion,
+    setMapRegion
   };
 
   return <Context.Provider value={context}>{children}</Context.Provider>;
