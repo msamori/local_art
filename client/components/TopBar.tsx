@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Appbar, Button, Modal, Portal, Text } from "react-native-paper";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { goAbout, goHome, goLogin, goRegister } from "../../utils";
 import { logoutUser } from "../../firebase";
 
 function TopBar({ navigation }) {
+
   const [visible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);
@@ -55,9 +56,11 @@ function TopBar({ navigation }) {
             ABOUT
           </Button>
           <Button
+            // disabled={!currentUser.id}
             onPress={() => {
               logoutUser();
               hideModal();
+              goLogin(navigation);
             }}
           >
             LOGOUT
