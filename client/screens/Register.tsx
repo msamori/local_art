@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Dimensions, View, StyleSheet } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import { createNewUser } from "../../firebase";
-import { goHome } from "../../utils";
 import { TopBar } from "../components";
 
 function Register(props) {
@@ -11,7 +10,6 @@ function Register(props) {
 
   async function onRegisterPress() {
     await createNewUser(email, password);
-    goHome(props.navigation)
   }
 
   return (

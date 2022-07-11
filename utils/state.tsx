@@ -19,37 +19,13 @@ const Provider = ({ children }) => {
     longitudeDelta: 0.01,
   });
 
-  const [currentUser, setCurrentUser] = useState({});
-
-  async function currentUserListener() {
-    try {
-      const unsubscribe = onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          const userData = await getLoggedInUserData(user.uid);
-          console.log("currentUserListener user:", userData);
-          setCurrentUser(userData);
-        } else {
-          console.log("currentUserListener: no user logged in.");
-        }
-        return unsubscribe;
-      });
-    } catch (error) {
-      console.error("currentUserListener error:", error);
-    }
-  }
-
-  useEffect(() => {
-    const unsubscribeCurrentUserListener = currentUserListener();
-    return () => {
-      unsubscribeCurrentUserListener();
-      setCurrentUser({});
-    };
-  }, []);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const context = {
-    currentUser,
+    loggedIn,
+    setLoggedIn,
     mapRegion,
-    setMapRegion
+    setMapRegion,
   };
 
   return <Context.Provider value={context}>{children}</Context.Provider>;

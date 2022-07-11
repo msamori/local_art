@@ -11,5 +11,11 @@ interface UserData {
   lastLogin?: number;
   lastLogout?: number;
 }
+interface ArtPic {
+  id: string;
+  latitude: number;
+  longitude: number;
+  url: string;
+}
 
-export { MapRegion, UserData };
+export { ArtPic, MapRegion, UserData };
