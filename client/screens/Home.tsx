@@ -27,17 +27,17 @@ function Home(props) {
       const q = query(
         collection(db, "seed_art"),
       );
-      let observations = [];
+      let cloudArray = [];
         onSnapshot(q, (querySnapshot) => {
         setArt([]);
         querySnapshot.forEach((doc) => {
           const observation = doc.data();
           observation.id = doc.id;
-          observations.push(observation);
+          cloudArray.push(observation);
         });
-        setArt(observations);
-        setSinglePic(observations[0]);
-        observations = [];
+        setArt(cloudArray);
+        setSinglePic(cloudArray[0]);
+        cloudArray = [];
         setLoading(false);
       });
     } catch (error) {
@@ -77,6 +77,9 @@ function Home(props) {
               coordinate={{
                 latitude: pic.latitude,
                 longitude: pic.longitude,
+              }}
+              onPress={() => {
+                setSinglePic(pic);
               }}
             />);
         })}
