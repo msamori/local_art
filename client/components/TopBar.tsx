@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
 import { Appbar, Button, Modal, Portal, Text } from "react-native-paper";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { goAbout, goHome, goLogin, goRegister } from "../../utils";
+import { Context, goAbout, goHome, goLogin, goRegister } from "../../utils";
 import { logoutUser } from "../../firebase";
 
 function TopBar({ navigation }) {
 
+  const { isLoggedIn, setIsLoggedIn } = useContext(Context);
   const [visible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);
@@ -28,6 +29,7 @@ function TopBar({ navigation }) {
               goHome(navigation);
               hideModal();
             }}
+            disabled={!isLoggedIn}
           >
             HOME
           </Button>
@@ -36,16 +38,9 @@ function TopBar({ navigation }) {
               goLogin(navigation);
               hideModal();
             }}
+            disabled={isLoggedIn}
           >
-            LOGIN
-          </Button>
-          <Button
-            onPress={() => {
-              goRegister(navigation);
-              hideModal();
-            }}
-          >
-            REGISTER
+            LOGIN / REGISTER
           </Button>
           <Button
             onPress={() => {
@@ -56,12 +51,12 @@ function TopBar({ navigation }) {
             ABOUT
           </Button>
           <Button
-            // disabled={!currentUser.id}
-            onPress={() => {
-              logoutUser();
+            onPress={ async () => {
+              setIsLoggedIn(false);
+              await logoutUser();
               hideModal();
-              goLogin(navigation);
             }}
+            disabled={!isLoggedIn}
           >
             LOGOUT
           </Button>
