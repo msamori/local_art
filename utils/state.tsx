@@ -1,13 +1,5 @@
+import * as Location from 'expo-location';
 import { createContext, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import {
-  collection,
-  query,
-  onSnapshot,
-} from "firebase/firestore";
-import { auth, db } from "../firebase/config";
-import { getLoggedInUserData } from "../firebase";
-
 
 const Context = createContext();
 
@@ -19,13 +11,39 @@ const Provider = ({ children }) => {
     longitudeDelta: 0.01,
   });
 
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [locationPermission, setLocationPermission] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const checkPermission = async () => {
+    const hasPermission = await Location.requestForegroundPermissionsAsync();
+    if (hasPermission.status === 'granted') {
+      setLocationPermission(true);
+      let location = await Location.getCurrentPositionAsync({});
+      console.log(location);
+      setMapRegion({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      });
+    } else {
+      console.log("sucks to suck")
+    }
+  };
+
+  useEffect(()=>{
+    checkPermission();
+    return ()=>{
+      setLocationPermission(false)
+    }
+  }, []);
 
   const context = {
-    loggedIn,
-    setLoggedIn,
     mapRegion,
+    locationPermission,
     setMapRegion,
+    isLoggedIn,
+    setIsLoggedIn
   };
 
   return <Context.Provider value={context}>{children}</Context.Provider>;

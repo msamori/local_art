@@ -14,12 +14,11 @@ import { Context } from "../../utils/state";
 
 function Home(props) {
 
-  const globalState = useContext(Context);
+  const { mapRegion, setIsLoggedIn } = useContext(Context);
 
   const [loading, setLoading] = useState(true)
 
   const [art, setArt] = useState([]);
-  const [picsIndex, setPicsIndex] = useState(0);
   const [singlePic, setSinglePic] = useState({});
 
   function artListener() {
@@ -41,16 +40,18 @@ function Home(props) {
         setLoading(false);
       });
     } catch (error) {
-      console.error("observationsListener error:", error);
+      console.error("artListener error:", error);
     }
   }
 
   useEffect(()=>{
     artListener();
     setSinglePic(art[0]);
+    setIsLoggedIn(true);
     return ()=>{
       setArt([]);
       setSinglePic({});
+      setIsLoggedIn(false);
     }
   }, [])
 
@@ -63,12 +64,10 @@ function Home(props) {
   return (
     <View style={styles.container}>
       <TopBar navigation={props.navigation} />
-      <Pressable onPress={()=>console.log("pressed")}>
       <Image source={{ uri: singlePic.url }} style={styles.selectedPic} />
-      </Pressable>
       <MapView
         style={styles.map}
-        initialRegion={globalState.mapRegion}
+        initialRegion={mapRegion}
       >
         {art.map((pic) => {
           return (
