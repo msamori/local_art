@@ -1,8 +1,8 @@
-interface MapRegion {
-  latitude: number;
-  longitude: number;
-  latitudeDelta: number;
-  longitudeDelta: number;
+type Region = {
+  latitude: Number,
+  longitude: Number,
+  latitudeDelta: Number,
+  longitudeDelta: Number,
 }
 
 interface UserData {
@@ -11,11 +11,11 @@ interface UserData {
   lastLogin?: number;
   lastLogout?: number;
 }
-interface ArtPic {
+type ArtPic = {
   id: string;
   latitude: number;
   longitude: number;
   url: string;
 }
 
-export { ArtPic, MapRegion, UserData };
+export { ArtPic, UserData, Region };
