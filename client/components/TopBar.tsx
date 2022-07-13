@@ -85,5 +85,7 @@ const styles = StyleSheet.create({
     right: 0,
     top: Dimensions.get("window").height * .05,
     height: Dimensions.get("window").height * .05,
+    zIndex: 3,
+    elevation: 3
   },
 });

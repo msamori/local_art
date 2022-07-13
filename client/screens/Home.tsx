@@ -1,11 +1,13 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import MapView from "react-native-maps";
 import AppIntroSlider from "react-native-app-intro-slider";
 import { db } from "../../firebase/config";
 import { collection, query, onSnapshot } from "firebase/firestore";
 import { TopBar } from "../components";
-import { Context } from "../../utils/state";
+import { Context } from "../../utils";
+import { ArtPic, Region } from "../../utils/types";
+
 
 const styles = StyleSheet.create({
   container: {
@@ -21,7 +23,7 @@ const styles = StyleSheet.create({
   selectedPic: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height * 0.6,
-    top: Dimensions.get("window").height * 0.1,
+    top: Dimensions.get("window").height * 0.10,
   },
   slide: {
     flex: 1,
@@ -31,19 +33,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const renderItem = ({ item }) => (
-  <View>
-    <Image source={{ uri: item.url }} style={styles.selectedPic} />
-  </View>
-);
-
 function Home(props) {
-  const { mapRegion, setIsLoggedIn } = useContext(Context);
+  const { mapRegion, setIsLoggedIn, setMapRegion } = useContext(Context);
 
   const [loading, setLoading] = useState(true);
 
   const [art, setArt] = useState([]);
-  const [singlePic, setSinglePic] = useState({});
 
   function artListener() {
     try {
@@ -57,7 +52,6 @@ function Home(props) {
           cloudArray.push(observation);
         });
         setArt(cloudArray);
-        setSinglePic(cloudArray[0]);
         cloudArray = [];
         setLoading(false);
       });
@@ -68,16 +62,37 @@ function Home(props) {
 
   useEffect(() => {
     artListener();
-    setSinglePic(art[0]);
     setIsLoggedIn(true);
     return () => {
       setArt([]);
-      setSinglePic({});
       setIsLoggedIn(false);
     };
   }, []);
 
-  const keyExtractor = (item) => item.url;
+  function shiftMap(item: ArtPic){
+    const newRegion: Region = {
+      latitude: item.latitude,
+      longitude: item.longitude,
+      latitudeDelta: 0.01,
+      longitudeDelta: 0.01
+    }
+    setMapRegion(newRegion)
+  }
+
+  const renderItem = ({ item }) => {
+    return (
+      <View>
+      <Pressable onLongPress={()=>{
+        shiftMap(item);
+      }}
+      >
+      <Image source={{ uri: item.url }} style={styles.selectedPic} />
+      </Pressable>
+    </View>
+
+  )};
+
+  const keyExtractor = (item: ArtPic) => item.url;
   const sliderEl = useRef(null);
 
   if (loading) {
@@ -93,8 +108,8 @@ function Home(props) {
         data={art}
         ref={sliderEl}
       />
-      <MapView style={styles.map} initialRegion={mapRegion}>
-        {art.map((pic) => {
+      <MapView style={styles.map} region={mapRegion}>
+        {art.map((pic: ArtPic) => {
           return (
             <MapView.Marker
               key={pic.id}
