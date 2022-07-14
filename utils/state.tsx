@@ -13,6 +13,19 @@ const Provider = ({ children }) => {
 
   const [locationPermission, setLocationPermission] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState({
+    coords: {
+      accuracy: 0,
+      altitude: 0,
+      altitudeAccuracy: 0,
+      heading: 0,
+      latitude: 0,
+      longitude: 0,
+      speed: 0,
+    },
+    mocked: false,
+    timestamp: 0,
+  })
 
   const checkPermission = async () => {
     const hasPermission = await Location.requestForegroundPermissionsAsync();
@@ -20,6 +33,7 @@ const Provider = ({ children }) => {
       setLocationPermission(true);
       let location = await Location.getCurrentPositionAsync({});
       console.log(location);
+      setCurrentLocation(location);
       setMapRegion({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
@@ -39,11 +53,12 @@ const Provider = ({ children }) => {
   }, []);
 
   const context = {
-    mapRegion,
-    locationPermission,
-    setMapRegion,
+    currentLocation,
     isLoggedIn,
-    setIsLoggedIn
+    locationPermission,
+    mapRegion,
+    setIsLoggedIn,
+    setMapRegion,
   };
 
   return <Context.Provider value={context}>{children}</Context.Provider>;
