@@ -4,6 +4,10 @@ import { createContext, useEffect, useState } from "react";
 const Context = createContext();
 
 const Provider = ({ children }) => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedInUser, setLoggedInUser ] = useState({});
+  const [locationPermission, setLocationPermission] = useState(false);
   const [mapRegion, setMapRegion] = useState({
     latitude: 40.85209694527278,
     longitude: -73.94126596326808,
@@ -11,8 +15,8 @@ const Provider = ({ children }) => {
     longitudeDelta: 0.01,
   });
 
-  const [locationPermission, setLocationPermission] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+
 
   const checkPermission = async () => {
     const hasPermission = await Location.requestForegroundPermissionsAsync();
@@ -39,11 +43,15 @@ const Provider = ({ children }) => {
   }, []);
 
   const context = {
-    mapRegion,
-    locationPermission,
-    setMapRegion,
     isLoggedIn,
-    setIsLoggedIn
+    setIsLoggedIn,
+    loggedInUser,
+    setLoggedInUser,
+    locationPermission,
+    mapRegion,
+    setMapRegion,
+
+
   };
 
   return <Context.Provider value={context}>{children}</Context.Provider>;
