@@ -6,6 +6,7 @@ import {
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "./config";
 import { UserData } from "../utils/types";
+
 async function createNewUser(email: string, password: string) {
   try {
     const userCredential = await createUserWithEmailAndPassword(
@@ -46,7 +47,8 @@ async function writeUserDataInFirestore(uid: string, email: string) {
 async function getLoggedInUserData(userId: string) {
   const docRef = doc(db, "users", userId);
   const docSnap = await getDoc(docRef);
-  const userData = docSnap.data();
+  const docData = docSnap.data();
+  const userData = new Object(docData);
   return userData;
 }
 

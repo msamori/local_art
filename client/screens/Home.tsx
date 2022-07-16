@@ -7,7 +7,6 @@ import { collection, query, onSnapshot } from "firebase/firestore";
 import { TopBar } from "../components";
 import { Context } from "../../utils";
 import { ArtPic, Region } from "../../utils/types";
-import { blue100 } from "react-native-paper/lib/typescript/styles/colors";
 
 
 const styles = StyleSheet.create({
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
 });
 
 function Home(props) {
-  const { currentLocation, locationPermission, mapRegion, setIsLoggedIn, setMapRegion } = useContext(Context);
+  const { currentLocation, locationPermission, mapRegion, setMapRegion } = useContext(Context);
 
   const [loading, setLoading] = useState(true);
 
@@ -63,10 +62,8 @@ function Home(props) {
 
   useEffect(() => {
     artListener();
-    setIsLoggedIn(true);
     return () => {
       setArt([]);
-      setIsLoggedIn(false);
     };
   }, []);
 

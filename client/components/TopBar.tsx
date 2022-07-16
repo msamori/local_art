@@ -6,7 +6,7 @@ import { logoutUser } from "../../firebase";
 
 function TopBar({ navigation }) {
 
-  const { isLoggedIn, setIsLoggedIn } = useContext(Context);
+  const { isLoggedIn } = useContext(Context);
   const [visible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);
@@ -52,7 +52,6 @@ function TopBar({ navigation }) {
           </Button>
           <Button
             onPress={ async () => {
-              setIsLoggedIn(false);
               await logoutUser();
               hideModal();
             }}

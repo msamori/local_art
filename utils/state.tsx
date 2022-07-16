@@ -1,11 +1,24 @@
 import * as Location from 'expo-location';
 import { createContext, useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { getLoggedInUserData } from '../firebase';
+import { auth } from '../firebase/config';
 
 const Context = createContext();
+type State = {
+  currentLocation: object;
+  isLoggedIn: boolean;
+  loading: boolean;
+  locationPermission: boolean;
+  loggedInUser: object;
+  mapRegion: object;
+  setMapRegion: object;
+}
 
 const Provider = ({ children }) => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true)
   const [loggedInUser, setLoggedInUser ] = useState({});
   const [locationPermission, setLocationPermission] = useState(false);
   const [mapRegion, setMapRegion] = useState({
@@ -47,19 +60,45 @@ const Provider = ({ children }) => {
     }
   };
 
+  async function currentUserListener() {
+    try {
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          const userData = await getLoggedInUserData(user.uid);
+          console.log("currentUserListener user:", userData);
+          setLoggedInUser(userData);
+          setIsLoggedIn(true)
+          setLoading(false);
+        } else {
+          console.log("currentUserListener: no user logged in.");
+          setLoggedInUser({});
+          setIsLoggedIn(false);
+          setLoading(false);
+        }
+        return unsubscribe;
+      });
+    } catch (error) {
+      console.error("currentUserListener error:", error);
+    }
+  }
+
   useEffect(()=>{
     checkPermission();
+    currentUserListener();
     return ()=>{
       setLocationPermission(false)
+      setLoggedInUser({});
+      setLoading(true);
     }
   }, []);
 
-  const context = {
+  const context: State = {
     currentLocation,
     isLoggedIn,
+    loading,
     locationPermission,
+    loggedInUser,
     mapRegion,
-    setIsLoggedIn,
     setMapRegion,
   };
 
