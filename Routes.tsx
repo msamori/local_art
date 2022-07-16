@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Context } from "./utils";
-import { About, Home, Login } from "./client/screens";
+import { About, Home, Login, Upload } from "./client/screens";
 
 function Routes() {
   const Stack = createNativeStackNavigator();
@@ -15,20 +15,19 @@ function Routes() {
   };
 
   if (loading) {
-    return (
-      <></>
-    )
+    return <></>;
   }
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={navOptions}>
-        { isLoggedIn ? (
+        {isLoggedIn ? (
           <>
-        <Stack.Screen name="Home" component={Home} />
-        </>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Upload" component={Upload} />
+          </>
         ) : (
-        <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Login" component={Login} />
         )}
         <Stack.Screen name="About" component={About} />
       </Stack.Navigator>

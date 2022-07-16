@@ -1,11 +1,10 @@
 import { useContext, useState } from "react";
 import { Appbar, Button, Modal, Portal, Text } from "react-native-paper";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { Context, goAbout, goHome, goLogin, goRegister } from "../../utils";
+import { Context, goAbout, goHome, goLogin, goUpload } from "../../utils";
 import { logoutUser } from "../../firebase";
 
 function TopBar({ navigation }) {
-
   const { isLoggedIn } = useContext(Context);
   const [visible, setVisible] = useState(false);
 
@@ -35,6 +34,15 @@ function TopBar({ navigation }) {
           </Button>
           <Button
             onPress={() => {
+              goUpload(navigation);
+              hideModal();
+            }}
+            disabled={!isLoggedIn}
+          >
+            UPLOAD
+          </Button>
+          <Button
+            onPress={() => {
               goLogin(navigation);
               hideModal();
             }}
@@ -51,7 +59,7 @@ function TopBar({ navigation }) {
             ABOUT
           </Button>
           <Button
-            onPress={ async () => {
+            onPress={async () => {
               await logoutUser();
               hideModal();
             }}
@@ -82,9 +90,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    top: Dimensions.get("window").height * .05,
-    height: Dimensions.get("window").height * .05,
+    top: Dimensions.get("window").height * 0.05,
+    height: Dimensions.get("window").height * 0.05,
     zIndex: 3,
-    elevation: 3
+    elevation: 3,
   },
 });
