@@ -12,8 +12,8 @@ function goLogin(navigation) {
   navigation.navigate("Login");
 }
 
-function goRegister(navigation) {
-  navigation.navigate("Register");
+function goUpload(navigation) {
+  navigation.navigate("Upload");
 }
 
-export { goAbout, goHome, goLogin, goRegister };
+export { goAbout, goHome, goLogin, goUpload };
