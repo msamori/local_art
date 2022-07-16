@@ -15,8 +15,6 @@ const Provider = ({ children }) => {
     longitudeDelta: 0.01,
   });
 
-  const [locationPermission, setLocationPermission] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentLocation, setCurrentLocation] = useState({
     coords: {
       accuracy: 0,
