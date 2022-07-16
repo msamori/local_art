@@ -7,6 +7,7 @@ import { collection, query, onSnapshot } from "firebase/firestore";
 import { TopBar } from "../components";
 import { Context } from "../../utils";
 import { ArtPic, Region } from "../../utils/types";
+import { blue100 } from "react-native-paper/lib/typescript/styles/colors";
 
 
 const styles = StyleSheet.create({
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
 });
 
 function Home(props) {
-  const { mapRegion, setIsLoggedIn, setMapRegion } = useContext(Context);
+  const { currentLocation, locationPermission, mapRegion, setIsLoggedIn, setMapRegion } = useContext(Context);
 
   const [loading, setLoading] = useState(true);
 
@@ -112,17 +113,27 @@ function Home(props) {
         {art.map((pic: ArtPic) => {
           return (
             <MapView.Marker
+            pinColor={"purple"}
               key={pic.id}
               coordinate={{
                 latitude: pic.latitude,
                 longitude: pic.longitude,
               }}
-              onPress={() => {
-                setSinglePic(pic);
-              }}
+
             />
           );
         })}
+        { locationPermission ? (
+          <MapView.Marker
+          pinColor={"blue"}
+          coordinate={{
+            latitude: currentLocation.coords.latitude,
+            longitude: currentLocation.coords.longitude,
+          }}
+        />
+        ) : (
+          <></>
+        )}
       </MapView>
     </View>
   );
