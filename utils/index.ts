@@ -16,4 +16,8 @@ function goUpload(navigation) {
   navigation.navigate("Upload");
 }
 
-export { goAbout, goHome, goLogin, goUpload };
+function goMap(navigation) {
+  navigation.navigate("Map");
+}
+
+export { goAbout, goHome, goLogin, goMap, goUpload };

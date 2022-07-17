@@ -3,20 +3,17 @@ import * as MediaLibrary from "expo-media-library";
 import { createContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { getLoggedInUserData } from "../firebase";
-import { auth } from "../firebase/config";
+import { auth, db } from "../firebase/config";
+import { collection, query, onSnapshot } from "firebase/firestore";
 
 const Context = createContext();
-type State = {
-  currentLocation: object;
-  isLoggedIn: boolean;
-  loading: boolean;
-  locationPermission: boolean;
-  loggedInUser: object;
-  mapRegion: object;
-  setMapRegion: object;
-};
 
 const Provider = ({ children }) => {
+  const [art, setArt] = useState([]);
+  const [pics, setPics] = useState([]);
+
+
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loggedInUser, setLoggedInUser] = useState({});
@@ -104,19 +101,81 @@ const Provider = ({ children }) => {
     }
   }
 
+  function artListener() {
+    try {
+      const q = query(collection(db, "seed_art"));
+      let cloudArray = [];
+      onSnapshot(q, (querySnapshot) => {
+        setArt([]);
+        querySnapshot.forEach((doc) => {
+          const observation = doc.data();
+          observation.id = doc.id;
+          cloudArray.push(observation);
+        });
+        setArt(cloudArray);
+        cloudArray = [];
+      });
+    } catch (error) {
+      console.error("artListener error:", error);
+    }
+  }
+
+  async function getPhotos() {
+    const albumName = "Camera";
+    const getAlbum = await MediaLibrary.getAlbumAsync(albumName);
+
+    const { assets } = await MediaLibrary.getAssetsAsync({
+      first: 5,
+      album: getAlbum,
+      sortBy: ["creationTime"],
+      mediaType: ["photo"],
+    });
+
+    let picArray = [];
+
+    for (let i = 0; i < assets.length; i++) {
+      let assetInformation = await MediaLibrary.getAssetInfoAsync(assets[i]);
+      let selectedPic = {
+        filename: assetInformation.filename,
+        uri: assetInformation.uri,
+        timeCreated: assetInformation.creationTime,
+        timeModified: assetInformation.modificationTime,
+        latitude: assetInformation.location.latitude,
+        longitude: assetInformation.location.longitude,
+      };
+
+      picArray.push(selectedPic);
+    }
+
+    setPics([...pics, ...picArray]);
+  }
+
   useEffect(() => {
-    checkLocationPermission();
-    checkMediaPermission();
-    currentUserListener();
+    init();
     return () => {
-      setLocationPermission(false);
-      setMediaPermission(false);
-      setLoggedInUser({});
-      setLoading(true);
+      cleanUp()
     };
   }, []);
 
-  const context: State = {
+  async function init(){
+    await checkLocationPermission();
+    await checkMediaPermission();
+    await currentUserListener();
+    await artListener();
+    await getPhotos();
+  }
+
+  function cleanUp(){
+    setLocationPermission(false);
+      setMediaPermission(false);
+      setLoggedInUser({});
+      setArt([]);
+      setPics([]);
+      setLoading(true);
+  }
+
+  const context = {
+    art,
     currentLocation,
     isLoggedIn,
     loading,
@@ -124,6 +183,7 @@ const Provider = ({ children }) => {
     loggedInUser,
     mapRegion,
     setMapRegion,
+    pics
   };
 
   return <Context.Provider value={context}>{children}</Context.Provider>;

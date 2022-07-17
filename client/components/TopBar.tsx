@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Appbar, Button, Modal, Portal, Text } from "react-native-paper";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { Context, goAbout, goHome, goLogin, goUpload } from "../../utils";
+import { Context, goAbout, goHome, goLogin, goMap, goUpload } from "../../utils";
 import { logoutUser } from "../../firebase";
 
 function TopBar({ navigation }) {
@@ -40,6 +40,15 @@ function TopBar({ navigation }) {
             disabled={!isLoggedIn}
           >
             UPLOAD
+          </Button>
+          <Button
+            onPress={() => {
+              goMap(navigation);
+              hideModal();
+            }}
+            disabled={!isLoggedIn}
+          >
+            MAP
           </Button>
           <Button
             onPress={() => {

@@ -2,8 +2,6 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import MapView from "react-native-maps";
 import AppIntroSlider from "react-native-app-intro-slider";
-import { db } from "../../firebase/config";
-import { collection, query, onSnapshot } from "firebase/firestore";
 import { TopBar } from "../components";
 import { Context } from "../../utils";
 import { ArtPic, Region } from "../../utils/types";
@@ -34,38 +32,7 @@ const styles = StyleSheet.create({
 });
 
 function Home(props) {
-  const { currentLocation, locationPermission, mapRegion, setMapRegion } = useContext(Context);
-
-  const [loading, setLoading] = useState(true);
-
-  const [art, setArt] = useState([]);
-
-  function artListener() {
-    try {
-      const q = query(collection(db, "seed_art"));
-      let cloudArray = [];
-      onSnapshot(q, (querySnapshot) => {
-        setArt([]);
-        querySnapshot.forEach((doc) => {
-          const observation = doc.data();
-          observation.id = doc.id;
-          cloudArray.push(observation);
-        });
-        setArt(cloudArray);
-        cloudArray = [];
-        setLoading(false);
-      });
-    } catch (error) {
-      console.error("artListener error:", error);
-    }
-  }
-
-  useEffect(() => {
-    artListener();
-    return () => {
-      setArt([]);
-    };
-  }, []);
+  const { art, currentLocation, loading, locationPermission, mapRegion, setMapRegion } = useContext(Context);
 
   function shiftMap(item: ArtPic){
     const newRegion: Region = {

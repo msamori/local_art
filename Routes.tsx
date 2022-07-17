@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Context } from "./utils";
-import { About, Home, Login, Upload } from "./client/screens";
+import { About, Home, Login, Map, Upload } from "./client/screens";
 
 function Routes() {
   const Stack = createNativeStackNavigator();
@@ -25,6 +25,7 @@ function Routes() {
           <>
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Upload" component={Upload} />
+            <Stack.Screen name="Map" component={Map} />
           </>
         ) : (
           <Stack.Screen name="Login" component={Login} />
