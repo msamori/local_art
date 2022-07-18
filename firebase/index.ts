@@ -4,8 +4,9 @@ import {
   signOut,
 } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { auth, db } from "./config";
+import { auth, db, storageRef } from "./config";
 import { UserData } from "../utils/types";
+import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
 
 async function createNewUser(email: string, password: string) {
   try {
@@ -88,4 +89,31 @@ async function logoutUser() {
   }
 }
 
-export { createNewUser, getLoggedInUserData, loginUser, logoutUser };
+async function uploadPhotoToStorage(data: object, uri: string) {
+  try {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    const observationsRef = ref(storageRef, "seed_art");
+    const imageRef = ref(observationsRef, `${data.filename}`);
+    await uploadBytesResumable(imageRef, blob);
+    const downloadURL = await getDownloadURL(imageRef);
+    data.url = downloadURL;
+    uploadDataToFirestore(data);
+  } catch (error) {
+    console.error("error adding photo to storage:", error);
+  }
+}
+
+async function uploadDataToFirestore(data: object) {
+  const docRef = doc(db, "seed_art", data.filename);
+  await setDoc(docRef, data);
+}
+
+export {
+  createNewUser,
+  getLoggedInUserData,
+  loginUser,
+  logoutUser,
+  uploadPhotoToStorage,
+};

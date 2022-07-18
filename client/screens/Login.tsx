@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Dimensions, View, StyleSheet } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import { createNewUser, loginUser } from "../../firebase";
-// import { goHome } from "../../utils";
 import { TopBar } from "../components";
 
 function Login(props) {
@@ -13,7 +12,6 @@ function Login(props) {
     await loginUser(email, password);
     setEmail("");
     setPassword("");
-    // goHome(props.navigation)
   }
 
   async function onRegisterPress() {
