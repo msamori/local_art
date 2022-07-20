@@ -3,12 +3,23 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { auth, db, storageRef } from "./config";
 import { UserData } from "../utils/types";
 import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
 
-async function createNewUser(email: string, password: string) {
+async function createNewUser(
+  email: string,
+  password: string,
+  userName: string
+) {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -16,7 +27,7 @@ async function createNewUser(email: string, password: string) {
       password
     );
 
-    writeUserDataInFirestore(userCredential.user.uid, email);
+    writeUserDataInFirestore(userCredential.user.uid, email, userName);
   } catch (error) {
     if (error.code === "auth/invalid-email") {
       console.log("Please enter a valid email address.");
@@ -30,10 +41,15 @@ async function createNewUser(email: string, password: string) {
   }
 }
 
-async function writeUserDataInFirestore(uid: string, email: string) {
+async function writeUserDataInFirestore(
+  uid: string,
+  email: string,
+  userName: string
+) {
   try {
     const data: UserData = {
       id: uid,
+      userName,
       email,
       lastLogin: Date.now(),
     };
@@ -91,23 +107,24 @@ async function logoutUser() {
 
 async function uploadPhotoToStorage(data: object, uri: string) {
   try {
+    const DOC_ID = await uploadDataToFirestore(data);
     const response = await fetch(uri);
     const blob = await response.blob();
 
     const observationsRef = ref(storageRef, "seed_art");
-    const imageRef = ref(observationsRef, `${data.filename}`);
+    const imageRef = ref(observationsRef, DOC_ID);
     await uploadBytesResumable(imageRef, blob);
     const downloadURL = await getDownloadURL(imageRef);
     data.url = downloadURL;
-    uploadDataToFirestore(data);
+    await setDoc(doc(db, "seed_art", DOC_ID), data);
   } catch (error) {
     console.error("error adding photo to storage:", error);
   }
 }
 
 async function uploadDataToFirestore(data: object) {
-  const docRef = doc(db, "seed_art", data.filename);
-  await setDoc(docRef, data);
+  const docRef = await addDoc(collection(db, "seed_art"), data);
+  return docRef.id;
 }
 
 export {

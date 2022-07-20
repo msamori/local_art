@@ -4,10 +4,6 @@ function goAbout(navigation) {
   navigation.navigate("About");
 }
 
-function goHome(navigation) {
-  navigation.navigate("Home");
-}
-
 function goLogin(navigation) {
   navigation.navigate("Login");
 }
@@ -20,4 +16,8 @@ function goMap(navigation) {
   navigation.navigate("Map");
 }
 
-export { goAbout, goHome, goLogin, goMap, goUpload };
+function goRegister(navigation){
+  navigation.navigate("Register");
+}
+
+export { goAbout, goLogin, goMap, goUpload, goRegister };

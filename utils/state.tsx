@@ -12,8 +12,6 @@ const Provider = ({ children }) => {
   const [art, setArt] = useState([]);
   const [pics, setPics] = useState([]);
 
-
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loggedInUser, setLoggedInUser] = useState({});
@@ -23,7 +21,7 @@ const Provider = ({ children }) => {
     latitude: 40.85209694527278,
     longitude: -73.94126596326808,
     latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
+    longitudeDelta: 0.005,
   });
 
   const [currentLocation, setCurrentLocation] = useState({
@@ -110,6 +108,7 @@ const Provider = ({ children }) => {
         querySnapshot.forEach((doc) => {
           const observation = doc.data();
           observation.id = doc.id;
+          observation.pinColor = "green";
           cloudArray.push(observation);
         });
         setArt(cloudArray);
@@ -125,7 +124,7 @@ const Provider = ({ children }) => {
     const getAlbum = await MediaLibrary.getAlbumAsync(albumName);
 
     const { assets } = await MediaLibrary.getAssetsAsync({
-      first: 5,
+      first: 20,
       album: getAlbum,
       sortBy: ["creationTime"],
       mediaType: ["photo"],
@@ -153,11 +152,11 @@ const Provider = ({ children }) => {
   useEffect(() => {
     init();
     return () => {
-      cleanUp()
+      cleanUp();
     };
   }, []);
 
-  async function init(){
+  async function init() {
     await checkLocationPermission();
     await checkMediaPermission();
     await currentUserListener();
@@ -165,13 +164,13 @@ const Provider = ({ children }) => {
     await getPhotos();
   }
 
-  function cleanUp(){
+  function cleanUp() {
     setLocationPermission(false);
-      setMediaPermission(false);
-      setLoggedInUser({});
-      setArt([]);
-      setPics([]);
-      setLoading(true);
+    setMediaPermission(false);
+    setLoggedInUser({});
+    setArt([]);
+    setPics([]);
+    setLoading(true);
   }
 
   const context = {
@@ -183,7 +182,7 @@ const Provider = ({ children }) => {
     loggedInUser,
     mapRegion,
     setMapRegion,
-    pics
+    pics,
   };
 
   return <Context.Provider value={context}>{children}</Context.Provider>;

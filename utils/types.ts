@@ -1,11 +1,12 @@
 type Region = {
-  latitude: number,
-  longitude: number,
-  latitudeDelta: number,
-  longitudeDelta: number,
-}
+  latitude: number;
+  longitude: number;
+  latitudeDelta: number;
+  longitudeDelta: number;
+};
 interface UserData {
   id: string;
+  userName: string;
   email: string;
   lastLogin?: number;
   lastLogout?: number;
@@ -15,7 +16,6 @@ type ArtPic = {
   latitude: number;
   longitude: number;
   url: string;
-}
-
+};
 
 export { ArtPic, UserData, Region };
