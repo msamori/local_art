@@ -14,8 +14,10 @@ function TopBar({ navigation }) {
   return (
     <View>
       <Appbar style={styles.top}>
-        <Text> Local Art </Text>
-        <Appbar.Action icon="menu" onPress={showModal} />
+        <Appbar.Action
+        icon="menu"
+        onPress={showModal}
+      />
       </Appbar>
       <Portal>
         <Modal
@@ -95,12 +97,13 @@ const styles = StyleSheet.create({
   },
   top: {
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: "center",
     position: "absolute",
-    left: 0,
-    right: 0,
-    top: Dimensions.get("window").height * 0.05,
+    backgroundColor: "transparent",
+    top: Dimensions.get("window").height * 0.06,
+    left: Dimensions.get("window").width * 0.03,
     height: Dimensions.get("window").height * 0.05,
+    width: Dimensions.get("window").width * 0.11,
     zIndex: 3,
     elevation: 3,
   },

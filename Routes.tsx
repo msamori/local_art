@@ -21,9 +21,9 @@ function Routes() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={navOptions}>
+      <Stack.Screen name="Map" component={Map} />
         {isLoggedIn ? (
           <>
-            <Stack.Screen name="Map" component={Map} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Upload" component={Upload} />
           </>
