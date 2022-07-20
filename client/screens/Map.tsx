@@ -9,24 +9,8 @@ function Map(props) {
   const { art, mapRegion, setMapRegion } = useContext(Context);
 
   const [visible, setVisible] = useState(false);
-  const [imageURL, setImageURL] = useState("");
-  const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
-  const [selectedImage, setSelectedImage] = useState({})
+  const [selectedImage, setSelectedImage] = useState({});
   const [selectedIndex, setSelectedIndex] = useState(-1);
-
-  const modal = StyleSheet.create({
-    container: {
-      width: Dimensions.get("window").width * 0.4,
-      height: Dimensions.get("window").height * 0.2,
-      position: "absolute",
-      top: touchPosition.y / 2.8,
-      left: touchPosition.x / 2.6,
-    },
-    description: {
-      backgroundColor: "white",
-      color: "black",
-    },
-  });
 
   function showModal(item, idx) {
     setSelectedImage(item);
@@ -47,7 +31,7 @@ function Map(props) {
           onDismiss={hideModal}
           contentContainerStyle={styles.modal}
         >
-          <MapModal pic={selectedImage} index={selectedIndex}/>
+          <MapModal pic={selectedImage} index={selectedIndex} func={hideModal}/>
         </Modal>
       </Portal>
       <MapView
@@ -68,7 +52,7 @@ function Map(props) {
                 longitude: pic.longitude,
               }}
               onPress={() => {
-                showModal( pic, idx);
+                showModal(pic, idx);
               }}
             />
           );
@@ -94,10 +78,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: Dimensions.get("window").height * 0.075,
     left: Dimensions.get("window").width * 0.2,
-  },
-  selectedPic: {
-    width: Dimensions.get("window").width * 0.6,
-    height: Dimensions.get("window").height * 0.3,
   },
 });
 

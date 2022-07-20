@@ -1,21 +1,21 @@
 import { useContext, useRef, useState } from "react";
-import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  Keyboard,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  View,
+} from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
 import { TopBar } from "../components";
 import { Context } from "../../utils";
 
-import {
-  TextInput,
-} from "react-native-paper";
-
+import { TextInput } from "react-native-paper";
 
 function Upload(props) {
-  const {
-    art,
-    currentLocation,
-    loading,
-    pics,
-  } = useContext(Context);
+  const { art, currentLocation, loading, pics } = useContext(Context);
 
   const [newDescription, setNewDescription] = useState("");
 
@@ -29,30 +29,22 @@ function Upload(props) {
           }}
         >
           <Image source={{ uri: item.uri }} style={styles.selectedPic} />
-          <TextInput
-                mode="outlined"
-                outlineColor="purple"
-                placeholder="add description"
-                placeholderTextColor="#aaaaaa"
-                onChangeText={(text) => setNewDescription(text)}
-                value={newDescription}
-                autoCapitalize="none"
-              />
         </Pressable>
       </View>
     );
   };
 
-  function addToMap(pic){
+  function addToMap(pic) {
     const toAdd = {
       filename: pic.filename,
       description: newDescription,
       latitude: pic.latitude || currentLocation.coords.latitude,
       longitude: pic.longitude || currentLocation.coords.longitude,
       url: pic.uri,
-      pinColor: "yellow"
+      pinColor: "yellow",
     };
     setNewDescription("");
+    Keyboard.dismiss();
     art.push(toAdd);
   }
 
@@ -69,8 +61,29 @@ function Upload(props) {
       <AppIntroSlider
         keyExtractor={keyExtractor}
         renderItem={renderItem}
+        renderPagination={(activeIndex) => (
+          <RenderPagination
+            data={pics}
+            activeIndex={activeIndex}
+            slider={sliderEl.current}
+            onIntroCompleted={() => {
+              console.log("complete");
+            }}
+          />
+        )}
         data={pics}
         ref={sliderEl}
+      />
+      <TextInput
+        mode="outlined"
+        // label="map image"
+        outlineColor="purple"
+        placeholder="add description here then press & hold on pic"
+        placeholderTextColor="grey"
+        onChangeText={(text) => setNewDescription(text)}
+        value={newDescription}
+        autoCapitalize="none"
+        style={styles.input}
       />
     </View>
   );
@@ -81,17 +94,60 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "black",
   },
-  map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height * 0.4,
-    position: "absolute",
-    top: Dimensions.get("window").height * 0.6,
+  input: {
+    bottom: 200,
+    height: Dimensions.get("window").height * 0.1,
   },
   selectedPic: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height * 0.6,
     top: Dimensions.get("window").height * 0.05,
   },
+  paginationContainer: {
+    bottom: 275,
+    left: 10,
+    right: 10,
+  },
+  paginationDots: {
+    height: 16,
+    margin: 16,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 4,
+  },
 });
+
+const RenderPagination = ({ activeIndex, slider, data, onIntroCompleted }) => {
+  const handleIntroCompleted = () => {
+    onIntroCompleted();
+  };
+  return (
+    <View style={styles.paginationContainer}>
+      <SafeAreaView>
+        <View style={styles.paginationDots}>
+          {data.length > 1 &&
+            data.map((_, i) => (
+              <Pressable
+                key={i}
+                style={[
+                  styles.dot,
+                  i === activeIndex
+                    ? { backgroundColor: "white" }
+                    : { backgroundColor: "rgba(0, 0, 0, 0.2)" },
+                ]}
+                onPress={() => slider?.goToSlide(i, true)}
+              />
+            ))}
+        </View>
+      </SafeAreaView>
+    </View>
+  );
+};
 
 export { Upload };

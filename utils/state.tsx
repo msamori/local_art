@@ -21,7 +21,7 @@ const Provider = ({ children }) => {
     latitude: 40.85209694527278,
     longitude: -73.94126596326808,
     latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
+    longitudeDelta: 0.005,
   });
 
   const [currentLocation, setCurrentLocation] = useState({

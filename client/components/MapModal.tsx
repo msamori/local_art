@@ -4,42 +4,44 @@ import { Dimensions, Image, StyleSheet, View } from "react-native";
 import { uploadPhotoToStorage } from "../../firebase";
 import { Context } from "../../utils";
 
-
-function MapModal({pic, index}){
-
-  const { art } = useContext(Context);
+function MapModal({ pic, index, func }) {
+  const { art, loggedInUser } = useContext(Context);
   const [isUploading, setIsUploading] = useState(false);
 
-  async function upload(){
+  async function upload() {
     setIsUploading(true);
 
     let data = {
       filename: pic.filename,
       description: pic.description,
       latitude: pic.latitude,
-      longitude: pic.longitude
-    }
+      longitude: pic.longitude,
+      createdBy: loggedInUser.userName,
+    };
 
     art.splice(index, 1);
 
     await uploadPhotoToStorage(data, pic.url);
     setIsUploading(false);
+    func();
   }
 
   return (
     <View>
-          <Image source={{ uri: pic.url }} style={styles.selectedPic} />
-          <Text style={styles.description}>{pic.description}</Text>
-          {pic.pinColor === "yellow" ? (
-            <>
-            <Button onPress={upload}> UPLOAD </Button>
-            <ActivityIndicator animating={isUploading} />
-            </>
-          ) : (
-            <></>
-          )}
+      <Image source={{ uri: pic.url }} style={styles.selectedPic} />
+      <Text style={styles.description}>{pic.description}</Text>
+      {pic.pinColor === "yellow" ? (
+        <>
+          <Button onPress={upload}> UPLOAD </Button>
+          <ActivityIndicator animating={isUploading} />
+        </>
+      ) : (
+        <>
+          <Text style={styles.description}>Added by: {pic.createdBy}</Text>
+        </>
+      )}
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -53,4 +55,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { MapModal }
+export { MapModal };

@@ -1,7 +1,14 @@
 import { useContext, useState } from "react";
 import { Appbar, Button, Modal, Portal, Text } from "react-native-paper";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { Context, goAbout, goHome, goLogin, goMap, goUpload } from "../../utils";
+import {
+  Context,
+  goAbout,
+  goLogin,
+  goMap,
+  goRegister,
+  goUpload,
+} from "../../utils";
 import { logoutUser } from "../../firebase";
 
 function TopBar({ navigation }) {
@@ -14,10 +21,7 @@ function TopBar({ navigation }) {
   return (
     <View>
       <Appbar style={styles.top}>
-        <Appbar.Action
-        icon="menu"
-        onPress={showModal}
-      />
+        <Appbar.Action icon="menu" onPress={showModal} />
       </Appbar>
       <Portal>
         <Modal
@@ -27,12 +31,12 @@ function TopBar({ navigation }) {
         >
           <Button
             onPress={() => {
-              goHome(navigation);
+              goMap(navigation);
               hideModal();
             }}
             disabled={!isLoggedIn}
           >
-            HOME
+            MAP
           </Button>
           <Button
             onPress={() => {
@@ -45,21 +49,21 @@ function TopBar({ navigation }) {
           </Button>
           <Button
             onPress={() => {
-              goMap(navigation);
-              hideModal();
-            }}
-            disabled={!isLoggedIn}
-          >
-            MAP
-          </Button>
-          <Button
-            onPress={() => {
               goLogin(navigation);
               hideModal();
             }}
             disabled={isLoggedIn}
           >
-            LOGIN / REGISTER
+            LOGIN
+          </Button>
+          <Button
+            onPress={() => {
+              goRegister(navigation);
+              hideModal();
+            }}
+            disabled={isLoggedIn}
+          >
+            Register
           </Button>
           <Button
             onPress={() => {
@@ -89,10 +93,9 @@ export { TopBar };
 const styles = StyleSheet.create({
   modal: {
     backgroundColor: "black",
-    color: "purple",
     position: "absolute",
-    left: 200,
-    right: 0,
+    left: 100,
+    right: 100,
     top: 50,
   },
   top: {
