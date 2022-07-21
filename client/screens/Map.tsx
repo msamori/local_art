@@ -22,6 +22,13 @@ function Map(props) {
     setVisible(false);
   }
 
+  function draggedMarker(coordinates, index){
+    if (art[index].pinColor === "yellow"){
+      art[index].latitude = coordinates.latitude;
+      art[index].longitude = coordinates.longitude;
+    }
+  }
+
   return (
     <View style={styles.container}>
       <TopBar navigation={props.navigation} />
@@ -51,6 +58,8 @@ function Map(props) {
                 latitude: pic.latitude,
                 longitude: pic.longitude,
               }}
+              draggable
+              onDragEnd={(e) => {draggedMarker(e.nativeEvent.coordinate, idx)}}
               onPress={() => {
                 showModal(pic, idx);
               }}
