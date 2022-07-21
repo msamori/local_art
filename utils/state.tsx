@@ -21,7 +21,7 @@ const Provider = ({ children }) => {
     latitude: 40.85209694527278,
     longitude: -73.94126596326808,
     latitudeDelta: 0.01,
-    longitudeDelta: 0.005,
+    longitudeDelta: 0.001,
   });
 
   const [currentLocation, setCurrentLocation] = useState({
@@ -43,7 +43,6 @@ const Provider = ({ children }) => {
     if (hasPermission.status === "granted") {
       setLocationPermission(true);
       let location = await Location.getCurrentPositionAsync({});
-      console.log(location);
       setCurrentLocation(location);
       setMapRegion({
         latitude: location.coords.latitude,
