@@ -5,7 +5,7 @@ import { uploadPhotoToStorage } from "../../firebase";
 import { Context } from "../../utils";
 
 function MapModal({ pic, index, func }) {
-  const { art, loggedInUser } = useContext(Context);
+  const { deviceArt, loggedInUser, pics } = useContext(Context);
   const [isUploading, setIsUploading] = useState(false);
 
   async function upload() {
@@ -19,7 +19,7 @@ function MapModal({ pic, index, func }) {
       createdBy: loggedInUser.userName,
     };
 
-    art.splice(index, 1);
+    deviceArt.splice(index, 1);
 
     await uploadPhotoToStorage(data, pic.url);
     setIsUploading(false);

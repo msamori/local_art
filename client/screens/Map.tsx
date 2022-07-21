@@ -6,7 +6,7 @@ import { MapModal, TopBar } from "../components";
 import { Context } from "../../utils";
 
 function Map(props) {
-  const { art, mapRegion, setMapRegion } = useContext(Context);
+  const { art, loggedInUser, mapRegion, deviceArt, setMapRegion } = useContext(Context);
 
   const [visible, setVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState({});
@@ -23,10 +23,8 @@ function Map(props) {
   }
 
   function draggedMarker(coordinates, index){
-    if (art[index].pinColor === "yellow"){
-      art[index].latitude = coordinates.latitude;
-      art[index].longitude = coordinates.longitude;
-    }
+    deviceArt[index].latitude = coordinates.latitude;
+    deviceArt[index].longitude = coordinates.longitude;
   }
 
   return (
@@ -54,6 +52,21 @@ function Map(props) {
             <MapView.Marker
               pinColor={pic.pinColor}
               key={idx}
+              coordinate={{
+                latitude: pic.latitude,
+                longitude: pic.longitude,
+              }}
+              onPress={() => {
+                showModal(pic, idx);
+              }}
+            />
+          );
+        })}
+        {deviceArt.map((pic, idx) => {
+          return (
+            <MapView.Marker
+              pinColor={pic.pinColor}
+              key={pic.url}
               coordinate={{
                 latitude: pic.latitude,
                 longitude: pic.longitude,

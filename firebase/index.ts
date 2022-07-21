@@ -116,6 +116,7 @@ async function uploadPhotoToStorage(data: object, uri: string) {
     await uploadBytesResumable(imageRef, blob);
     const downloadURL = await getDownloadURL(imageRef);
     data.url = downloadURL;
+    data.addedAt = Date.now();
     await setDoc(doc(db, "seed_art", DOC_ID), data);
   } catch (error) {
     console.error("error adding photo to storage:", error);

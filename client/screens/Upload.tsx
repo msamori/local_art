@@ -15,7 +15,7 @@ import { Context } from "../../utils";
 import { TextInput } from "react-native-paper";
 
 function Upload(props) {
-  const { art, currentLocation, loading, pics } = useContext(Context);
+  const { currentLocation, deviceArt, loading, pics } = useContext(Context);
 
   const [newDescription, setNewDescription] = useState("");
 
@@ -45,7 +45,7 @@ function Upload(props) {
     };
     setNewDescription("");
     Keyboard.dismiss();
-    art.push(toAdd);
+    deviceArt.push(toAdd);
   }
 
   const keyExtractor = (item) => item.uri;

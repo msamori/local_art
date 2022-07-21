@@ -11,6 +11,7 @@ const Context = createContext();
 const Provider = ({ children }) => {
   const [art, setArt] = useState([]);
   const [pics, setPics] = useState([]);
+  const [deviceArt, setDeviceArt] = useState([])
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -174,6 +175,8 @@ const Provider = ({ children }) => {
 
   const context = {
     art,
+    deviceArt,
+    setDeviceArt,
     currentLocation,
     isLoggedIn,
     loading,
