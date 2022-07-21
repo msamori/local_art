@@ -4,6 +4,7 @@ import { Modal, Portal, Text } from "react-native-paper";
 import { Dimensions, Image, StyleSheet, View } from "react-native";
 import { MapModal, TopBar } from "../components";
 import { Context } from "../../utils";
+import { markArtAsSeen } from "../../firebase";
 
 function Map(props) {
   const { art, loggedInUser, mapRegion, deviceArt, setMapRegion } = useContext(Context);
@@ -48,6 +49,7 @@ function Map(props) {
         }}
       >
         {art.map((pic, idx) => {
+          if (!pic.seenBy.includes(loggedInUser.id)) pic.pinColor = "blue";
           return (
             <MapView.Marker
               pinColor={pic.pinColor}
@@ -57,6 +59,10 @@ function Map(props) {
                 longitude: pic.longitude,
               }}
               onPress={() => {
+                if (pic.pinColor === "blue"){
+                  pic.pinColor = "green";
+                  markArtAsSeen(pic.id, loggedInUser.id)
+                }
                 showModal(pic, idx);
               }}
             />

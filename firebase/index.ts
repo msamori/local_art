@@ -8,6 +8,8 @@ import {
   collection,
   doc,
   getDoc,
+  FieldValue,
+  arrayUnion,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
@@ -128,10 +130,18 @@ async function uploadDataToFirestore(data: object) {
   return docRef.id;
 }
 
+async function markArtAsSeen(artID: string, userId: string){
+  const docRef = doc(db, "seed_art", artID)
+  await updateDoc(docRef, {
+    seenBy: arrayUnion(userId)
+  })
+}
+
 export {
   createNewUser,
   getLoggedInUserData,
   loginUser,
   logoutUser,
+  markArtAsSeen,
   uploadPhotoToStorage,
 };

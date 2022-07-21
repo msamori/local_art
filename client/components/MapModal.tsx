@@ -17,6 +17,7 @@ function MapModal({ pic, index, func }) {
       latitude: pic.latitude,
       longitude: pic.longitude,
       createdBy: loggedInUser.userName,
+      seenBy: [loggedInUser.id]
     };
 
     deviceArt.splice(index, 1);
