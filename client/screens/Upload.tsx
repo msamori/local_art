@@ -9,10 +9,8 @@ import {
   View,
 } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
-import { TopBar } from "../components";
+import { TopBar, TextInput } from "../components";
 import { Context } from "../../utils";
-
-import { TextInput } from "react-native-paper";
 
 function Upload(props) {
   const { currentLocation, deviceArt, loading, pics } = useContext(Context);
@@ -75,11 +73,8 @@ function Upload(props) {
         ref={sliderEl}
       />
       <TextInput
-        mode="outlined"
-        // label="map image"
-        // outlineColor="purple"
-        placeholder="add description here then press & hold on pic"
-        placeholderTextColor="grey"
+        label="Description"
+        returnKeyType="done"
         onChangeText={(text) => setNewDescription(text)}
         value={newDescription}
         autoCapitalize="none"
@@ -96,16 +91,17 @@ const styles = StyleSheet.create({
   },
   input: {
     bottom: 200,
-    height: Dimensions.get("window").height * 0.1,
+    width: Dimensions.get("window").width * 0.9,
+    alignSelf: "center"
   },
   selectedPic: {
     resizeMode: "contain",
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height * 0.6,
-    top: Dimensions.get("window").height * 0.05,
   },
   paginationContainer: {
-    bottom: 275,
+    bottom: 250,
+    display: "none",
     left: 10,
     right: 10,
   },

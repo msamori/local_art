@@ -7,7 +7,7 @@ import { Context } from "../../utils";
 import { markArtAsSeen } from "../../firebase";
 
 function Map(props) {
-  const { art, loggedInUser, mapRegion, deviceArt, setMapRegion } = useContext(Context);
+  const { art, loading, loggedInUser, mapRegion, deviceArt, setMapRegion } = useContext(Context);
 
   const [visible, setVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState({});
@@ -26,6 +26,10 @@ function Map(props) {
   function draggedMarker(coordinates, index){
     deviceArt[index].latitude = coordinates.latitude;
     deviceArt[index].longitude = coordinates.longitude;
+  }
+
+  if (loading) {
+    return <></>;
   }
 
   return (
