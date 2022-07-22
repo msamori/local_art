@@ -156,6 +156,13 @@ const Provider = ({ children }) => {
     };
   }, []);
 
+  useEffect(() => {
+    artListener();
+    return () => {
+      setArt([]);
+    };
+  }, [loggedInUser]);
+
   async function init() {
     await checkLocationPermission();
     await checkMediaPermission();

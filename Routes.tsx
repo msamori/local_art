@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Context } from "./utils";
-import { About, Login, Map, Upload, Register } from "./client/screens";
+import { Login, Map, Upload, Register } from "./client/screens";
 
 function Routes() {
   const Stack = createNativeStackNavigator();
@@ -21,9 +21,9 @@ function Routes() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={navOptions}>
-        <Stack.Screen name="Map" component={Map} />
         {isLoggedIn ? (
           <>
+            <Stack.Screen name="Map" component={Map} />
             <Stack.Screen name="Upload" component={Upload} />
           </>
         ) : (
@@ -32,7 +32,6 @@ function Routes() {
             <Stack.Screen name="Register" component={Register} />
           </>
         )}
-        <Stack.Screen name="About" component={About} />
       </Stack.Navigator>
     </NavigationContainer>
   );

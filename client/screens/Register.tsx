@@ -1,59 +1,81 @@
 import { useState } from "react";
-import { Dimensions, View, StyleSheet } from "react-native";
-import { Button, Text, TextInput } from "react-native-paper";
+import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Text } from "react-native-paper";
 import { createNewUser, loginUser } from "../../firebase";
-import { TopBar } from "../components";
+import { Button, TextInput, TopBar } from "../components";
+import { emailValidator, nameValidator, passwordValidator } from "../../utils";
 
 function Register(props) {
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState({ value: "", error: "" });
+  const [email, setEmail] = useState({ value: "", error: "" });
+  const [password, setPassword] = useState({ value: "", error: "" });
 
   async function onRegisterPress() {
-    await createNewUser(email, password, userName);
-    setEmail("");
-    setPassword("");
-    setUserName("");
+    const userNameError = nameValidator(userName.value);
+    const emailError = emailValidator(email.value);
+    const passwordError = passwordValidator(password.value);
+
+    if (emailError || passwordError || userNameError) {
+      setEmail({ ...email, error: emailError });
+      setPassword({ ...password, error: passwordError });
+      setUserName({ ...userName, error: userNameError });
+      return;
+    } else {
+      await createNewUser(email.value, password.value, userName.value);
+      setEmail({ value: "", error: "" });
+      setPassword({ value: "", error: "" });
+      setUserName({ value: "", error: "" });
+    }
   }
 
   return (
     <View style={styles.container}>
       <TopBar navigation={props.navigation} />
       <View style={styles.inputs}>
-      <TextInput
-        mode="outlined"
-        outlineColor="purple"
-        placeholder="user name"
-        placeholderTextColor="#aaaaaa"
-        onChangeText={(text) => setUserName(text)}
-        value={userName}
-        autoCapitalize="none"
-      />
-      <TextInput
-        mode="outlined"
-        outlineColor="purple"
-        placeholder="E-mail"
-        placeholderTextColor="#aaaaaa"
-        onChangeText={(text) => setEmail(text)}
-        value={email}
-        autoCapitalize="none"
-      />
-      <TextInput
-        mode="outlined"
-        outlineColor="purple"
-        secureTextEntry
-        placeholder="Password"
-        placeholderTextColor="#aaaaaa"
-        onChangeText={(text) => setPassword(text)}
-        value={password}
-        autoCapitalize="none"
-      />
-      <Button
-      onPress={() => onRegisterPress()}
-      disabled={!userName || !password || !email}
-      >
-        Register
+        <TextInput
+          label="User name"
+          returnKeyType="next"
+          value={userName.value}
+          onChangeText={(text) => setUserName({ value: text, error: "" })}
+          error={!!userName.error}
+          errorText={userName.error}
+          autoCapitalize="none"
+        />
+        <TextInput
+          label="Email"
+          returnKeyType="next"
+          value={email.value}
+          error={!!email.error}
+          errorText={email.error}
+          onChangeText={(text) => setEmail({ value: text, error: "" })}
+          autoCapitalize="none"
+          autoCompleteType="email"
+          textContentType="emailAddress"
+          keyboardType="email-address"
+        />
+        <TextInput
+          label="Password"
+          returnKeyType="done"
+          value={password.value}
+          onChangeText={(text) => setPassword({ value: text, error: "" })}
+          error={!!password.error}
+          errorText={password.error}
+          secureTextEntry
+          autoCapitalize="none"
+        />
+        <Button
+          mode="contained"
+          onPress={() => onRegisterPress()}
+          disabled={!userName || !password || !email}
+        >
+          Register
         </Button>
+        <View style={styles.row}>
+          <Text> Have an account? </Text>
+          <TouchableOpacity onPress={() => props.navigation.navigate("Login")}>
+            <Text style={styles.link}>Sign in</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -64,12 +86,19 @@ export { Register };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
-    justifyContent: "space-between"
   },
   inputs: {
     flex: 1,
+    padding: 20,
+    width: "100%",
     justifyContent: "center",
-    top: Dimensions.get("window").height * .10,
-  }
+    top: Dimensions.get("window").height * 0.1,
+  },
+  link: {
+    fontWeight: "bold",
+  },
+  row: {
+    flexDirection: "row",
+    marginTop: 4,
+  },
 });
