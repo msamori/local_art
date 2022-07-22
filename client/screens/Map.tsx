@@ -93,7 +93,7 @@ function Map(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
+    // backgroundColor: "black",
   },
   map: {
     width: Dimensions.get("window").width,

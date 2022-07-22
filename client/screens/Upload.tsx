@@ -77,7 +77,7 @@ function Upload(props) {
       <TextInput
         mode="outlined"
         // label="map image"
-        outlineColor="purple"
+        // outlineColor="purple"
         placeholder="add description here then press & hold on pic"
         placeholderTextColor="grey"
         onChangeText={(text) => setNewDescription(text)}
@@ -92,13 +92,14 @@ function Upload(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
+    // backgroundColor: "black",
   },
   input: {
     bottom: 200,
     height: Dimensions.get("window").height * 0.1,
   },
   selectedPic: {
+    resizeMode: "contain",
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height * 0.6,
     top: Dimensions.get("window").height * 0.05,

@@ -28,7 +28,7 @@ function MapModal({ pic, index, func }) {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <Image source={{ uri: pic.url }} style={styles.selectedPic} />
       <Text style={styles.description}>{pic.description}</Text>
       {pic.pinColor === "yellow" ? (
@@ -38,7 +38,7 @@ function MapModal({ pic, index, func }) {
         </>
       ) : (
         <>
-          <Text style={styles.description}>Added by: {pic.createdBy}</Text>
+          <Text>Added by: {pic.createdBy}</Text>
         </>
       )}
     </View>
@@ -46,11 +46,16 @@ function MapModal({ pic, index, func }) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // backgroundColor: "transparent",
+  },
   description: {
-    backgroundColor: "white",
-    color: "black",
+    // backgroundColor: "#B81484",
+    // color: "#CBE432",
   },
   selectedPic: {
+    resizeMode: "cover",
     width: Dimensions.get("window").width * 0.6,
     height: Dimensions.get("window").height * 0.3,
   },

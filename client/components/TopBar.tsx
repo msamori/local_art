@@ -92,7 +92,7 @@ export { TopBar };
 
 const styles = StyleSheet.create({
   modal: {
-    backgroundColor: "black",
+    // backgroundColor: "black",
     position: "absolute",
     left: 100,
     right: 100,

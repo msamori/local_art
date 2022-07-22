@@ -22,7 +22,7 @@ function Register(props) {
       <View style={styles.inputs}>
       <TextInput
         mode="outlined"
-        outlineColor="purple"
+        // outlineColor="purple"
         placeholder="user name"
         placeholderTextColor="#aaaaaa"
         onChangeText={(text) => setUserName(text)}
@@ -31,7 +31,7 @@ function Register(props) {
       />
       <TextInput
         mode="outlined"
-        outlineColor="purple"
+        // outlineColor="purple"
         placeholder="E-mail"
         placeholderTextColor="#aaaaaa"
         onChangeText={(text) => setEmail(text)}
@@ -40,7 +40,7 @@ function Register(props) {
       />
       <TextInput
         mode="outlined"
-        outlineColor="purple"
+        // outlineColor="purple"
         secureTextEntry
         placeholder="Password"
         placeholderTextColor="#aaaaaa"
@@ -64,7 +64,7 @@ export { Register };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
+    // backgroundColor: "black",
     justifyContent: "space-between"
   },
   inputs: {

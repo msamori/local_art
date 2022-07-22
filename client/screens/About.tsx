@@ -18,7 +18,7 @@ export { About };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
+    // backgroundColor: "black",
     justifyContent: "space-between"
   },
   inputs: {
