@@ -87,12 +87,11 @@ function Upload(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "black",
   },
   input: {
     bottom: 200,
     width: Dimensions.get("window").width * 0.9,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   selectedPic: {
     resizeMode: "contain",
@@ -121,9 +120,6 @@ const styles = StyleSheet.create({
 });
 
 const RenderPagination = ({ activeIndex, slider, data, onIntroCompleted }) => {
-  const handleIntroCompleted = () => {
-    onIntroCompleted();
-  };
   return (
     <View style={styles.paginationContainer}>
       <SafeAreaView>

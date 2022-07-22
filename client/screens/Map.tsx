@@ -7,7 +7,8 @@ import { Context } from "../../utils";
 import { markArtAsSeen } from "../../firebase";
 
 function Map(props) {
-  const { art, loading, loggedInUser, mapRegion, deviceArt, setMapRegion } = useContext(Context);
+  const { art, loading, loggedInUser, mapRegion, deviceArt, setMapRegion } =
+    useContext(Context);
 
   const [visible, setVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState({});
@@ -23,7 +24,7 @@ function Map(props) {
     setVisible(false);
   }
 
-  function draggedMarker(coordinates, index){
+  function draggedMarker(coordinates, index) {
     deviceArt[index].latitude = coordinates.latitude;
     deviceArt[index].longitude = coordinates.longitude;
   }
@@ -41,7 +42,11 @@ function Map(props) {
           onDismiss={hideModal}
           contentContainerStyle={styles.modal}
         >
-          <MapModal pic={selectedImage} index={selectedIndex} func={hideModal}/>
+          <MapModal
+            pic={selectedImage}
+            index={selectedIndex}
+            func={hideModal}
+          />
         </Modal>
       </Portal>
       <MapView
@@ -63,9 +68,9 @@ function Map(props) {
                 longitude: pic.longitude,
               }}
               onPress={() => {
-                if (pic.pinColor === "blue"){
+                if (pic.pinColor === "blue") {
                   pic.pinColor = "green";
-                  markArtAsSeen(pic.id, loggedInUser.id)
+                  markArtAsSeen(pic.id, loggedInUser.id);
                 }
                 showModal(pic, idx);
               }}
@@ -82,7 +87,9 @@ function Map(props) {
                 longitude: pic.longitude,
               }}
               draggable
-              onDragEnd={(e) => {draggedMarker(e.nativeEvent.coordinate, idx)}}
+              onDragEnd={(e) => {
+                draggedMarker(e.nativeEvent.coordinate, idx);
+              }}
               onPress={() => {
                 showModal(pic, idx);
               }}
@@ -97,7 +104,6 @@ function Map(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "black",
   },
   map: {
     width: Dimensions.get("window").width,

@@ -17,7 +17,7 @@ function MapModal({ pic, index, func }) {
       latitude: pic.latitude,
       longitude: pic.longitude,
       createdBy: loggedInUser.userName,
-      seenBy: [loggedInUser.id]
+      seenBy: [loggedInUser.id],
     };
 
     deviceArt.splice(index, 1);
@@ -30,7 +30,7 @@ function MapModal({ pic, index, func }) {
   return (
     <View style={styles.container}>
       <Image source={{ uri: pic.url }} style={styles.selectedPic} />
-      <Text style={styles.description}>{pic.description}</Text>
+      <Text>{pic.description}</Text>
       {pic.pinColor === "yellow" ? (
         <>
           <Button onPress={upload}> UPLOAD </Button>
@@ -48,11 +48,6 @@ function MapModal({ pic, index, func }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "transparent",
-  },
-  description: {
-    // backgroundColor: "#B81484",
-    // color: "#CBE432",
   },
   selectedPic: {
     resizeMode: "cover",

@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-paper";
 import { loginUser } from "../../firebase";
 import { Button, TextInput, TopBar } from "../components";
-import { emailValidator, passwordValidator } from "../../utils"
+import { emailValidator, passwordValidator } from "../../utils";
 
 function Login(props) {
   const [email, setEmail] = useState({ value: "", error: "" });
