@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
-import { ActivityIndicator, Button, Text } from "react-native-paper";
-import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Text } from "react-native-paper";
+import { Dimensions, Image, StyleSheet, Pressable, View } from "react-native";
 import { uploadPhotoToStorage } from "../../firebase";
 import { Context } from "../../utils";
 
@@ -27,27 +27,63 @@ function MapModal({ pic, index, func }) {
     func();
   }
 
+  function remove() {
+    deviceArt.splice(index, 1);
+    func();
+  }
+
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: pic.url }} style={styles.selectedPic} />
-      <Text>{pic.description}</Text>
-      {pic.pinColor === "yellow" ? (
-        <>
-          <Button onPress={upload}> UPLOAD </Button>
-          <ActivityIndicator animating={isUploading} />
-        </>
-      ) : (
-        <>
-          <Text>Added by: {pic.createdBy}</Text>
-        </>
-      )}
-    </View>
+    <>
+      <View style={styles.container}>
+        <Image source={{ uri: pic.url }} style={styles.selectedPic} />
+        <Text style={styles.bold}>"{pic.description}"</Text>
+        {pic.pinColor === "yellow" ? (
+          <>
+            <View style={styles.row}>
+              <Pressable onPress={upload}>
+                <Text style={styles.upload}> * UPLOAD * </Text>
+              </Pressable>
+              <Pressable onPress={remove}>
+                <Text style={styles.upload}> * REMOVE * </Text>
+              </Pressable>
+            </View>
+          </>
+        ) : (
+          <View style={styles.row}>
+            <Text style={styles.bold}>-{pic.createdBy}</Text>
+          </View>
+        )}
+      </View>
+      <ActivityIndicator animating={isUploading} />
+    </>
   );
 }
 
 const styles = StyleSheet.create({
+  bold: {
+    fontWeight: "bold",
+    color: "#F3F7D4",
+    margin: 0.5,
+    textAlign: "center",
+  },
+  upload: {
+    display: "flex",
+    fontWeight: "bold",
+    color: "#B81484",
+    margin: 0.5,
+    alignSelf: "center",
+    alignContent: "center",
+  },
+  buttonContainer: {
+    width: Dimensions.get("window").width * 0.6,
+  },
   container: {
     flex: 1,
+    backgroundColor: "black",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   selectedPic: {
     resizeMode: "cover",

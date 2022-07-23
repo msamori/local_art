@@ -4,23 +4,20 @@ import { Provider } from "./utils";
 import { Routes } from "./Routes";
 
 export default function App() {
-
-  // const theme = {
-  //   ...DefaultTheme,
-  //   roundness: 2,
-  //   version: 3,
-  //   colors: {
-  //     ...DefaultTheme.colors,
-  //     primary: '#3498db',
-  //     secondary: '#f1c40f',
-  //     tertiary: '#a1b2c3'
-  //   },
-  // };
+  const theme = {
+    ...DefaultTheme,
+    roundness: 2,
+    version: 3,
+    colors: {
+      ...DefaultTheme.colors,
+      primary: "#340926",
+      text: "#340926",
+    },
+  };
 
   return (
     <Provider>
-      {/* <PaperProvider theme={theme}> */}
-      <PaperProvider>
+      <PaperProvider theme={theme}>
         <Routes />
       </PaperProvider>
     </Provider>

@@ -13,13 +13,13 @@ import { TopBar, TextInput } from "../components";
 import { Context } from "../../utils";
 
 function Upload(props) {
-  const { currentLocation, deviceArt, loading, pics } = useContext(Context);
+  const { currentLocation, deviceArt, pics } = useContext(Context);
 
   const [newDescription, setNewDescription] = useState("");
 
   const renderItem = ({ item }) => {
     return (
-      <View>
+      <View style={styles.container}>
         <Pressable
           disabled={!newDescription}
           onLongPress={() => {
@@ -46,16 +46,12 @@ function Upload(props) {
     deviceArt.push(toAdd);
   }
 
-  const keyExtractor = (item) => item.uri;
+  const keyExtractor = (item) => item.filename;
   const sliderEl = useRef(null);
-
-  if (loading) {
-    return <></>;
-  }
 
   return (
     <View style={styles.container}>
-      <TopBar navigation={props.navigation} />
+      <TopBar navigation={props.navigation} inputStyles={styles} />
       <AppIntroSlider
         keyExtractor={keyExtractor}
         renderItem={renderItem}
@@ -85,13 +81,27 @@ function Upload(props) {
 }
 
 const styles = StyleSheet.create({
+  bold: {
+    fontWeight: "bold",
+    color: "#F3F7D4",
+    margin: 0.5,
+    textAlign: "center",
+  },
   container: {
     flex: 1,
+    backgroundColor: "black",
+    flexDirection: "column",
   },
   input: {
-    bottom: 200,
+    bottom: Dimensions.get("window").height * 0.35,
     width: Dimensions.get("window").width * 0.9,
     alignSelf: "center",
+  },
+  map: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height * 0.25,
+    position: "absolute",
+    top: Dimensions.get("window").height * 0.7,
   },
   selectedPic: {
     resizeMode: "contain",
@@ -116,6 +126,15 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 5,
     marginHorizontal: 4,
+  },
+  topModal: {
+    position: "absolute",
+    left: 100,
+    right: 100,
+    top: 50,
+  },
+  topButtons: {
+    color: "#F3F7D4",
   },
 });
 
