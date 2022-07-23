@@ -11,7 +11,7 @@ const Context = createContext();
 const Provider = ({ children }) => {
   const [art, setArt] = useState([]);
   const [pics, setPics] = useState([]);
-  const [deviceArt, setDeviceArt] = useState([])
+  const [deviceArt, setDeviceArt] = useState([]);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -124,7 +124,7 @@ const Provider = ({ children }) => {
     const getAlbum = await MediaLibrary.getAlbumAsync(albumName);
 
     const { assets } = await MediaLibrary.getAssetsAsync({
-      first: 20,
+      first: 10,
       album: getAlbum,
       sortBy: ["creationTime"],
       mediaType: ["photo"],
@@ -188,6 +188,7 @@ const Provider = ({ children }) => {
     isLoggedIn,
     loading,
     locationPermission,
+    mediaPermission,
     loggedInUser,
     mapRegion,
     setMapRegion,

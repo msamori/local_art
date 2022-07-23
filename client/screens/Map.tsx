@@ -1,7 +1,7 @@
 import MapView from "react-native-maps";
 import { useContext, useState } from "react";
-import { Modal, Portal, Text } from "react-native-paper";
-import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { Modal, Portal } from "react-native-paper";
+import { Dimensions, StyleSheet, View } from "react-native";
 import { MapModal, TopBar } from "../components";
 import { Context } from "../../utils";
 import { markArtAsSeen } from "../../firebase";
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height * 0.95,
+    height: Dimensions.get("window").height,
     position: "absolute",
     top: Dimensions.get("window").height * 0.05,
   },
@@ -116,6 +116,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: Dimensions.get("window").height * 0.075,
     left: Dimensions.get("window").width * 0.2,
+  },
+  topModal: {
+    position: "absolute",
+    left: 100,
+    right: 100,
+    top: 50,
+  },
+  topButtons: {
+    color: "#F3F7D4",
   },
 });
 

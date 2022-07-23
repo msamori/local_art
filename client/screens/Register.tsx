@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Text } from "react-native-paper";
-import { createNewUser, loginUser } from "../../firebase";
+import { Text, Headline } from "react-native-paper";
+import { createNewUser } from "../../firebase";
 import { Button, TextInput, TopBar } from "../components";
 import { emailValidator, nameValidator, passwordValidator } from "../../utils";
 
@@ -31,6 +31,7 @@ function Register(props) {
   return (
     <View style={styles.container}>
       <TopBar navigation={props.navigation} />
+      <Headline style={styles.title}> Local Art </Headline>
       <View style={styles.inputs}>
         <TextInput
           label="User name"
@@ -49,7 +50,6 @@ function Register(props) {
           errorText={email.error}
           onChangeText={(text) => setEmail({ value: text, error: "" })}
           autoCapitalize="none"
-          autoCompleteType="email"
           textContentType="emailAddress"
           keyboardType="email-address"
         />
@@ -86,6 +86,7 @@ export { Register };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#F3F7d4",
   },
   inputs: {
     flex: 1,
@@ -100,5 +101,9 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     marginTop: 4,
+  },
+  title: {
+    top: Dimensions.get("window").height * 0.2,
+    padding: 10,
   },
 });

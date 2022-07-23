@@ -1,17 +1,10 @@
 import { useContext, useState } from "react";
-import { Appbar, Button, Modal, Portal, Text } from "react-native-paper";
+import { Appbar, Button, Modal, Portal } from "react-native-paper";
 import { Dimensions, StyleSheet, View } from "react-native";
-import {
-  Context,
-  goAbout,
-  goLogin,
-  goMap,
-  goRegister,
-  goUpload,
-} from "../../utils";
+import { Context, goLogin, goMap, goRegister, goUpload } from "../../utils";
 import { logoutUser } from "../../firebase";
 
-function TopBar({ navigation }) {
+function TopBar({ navigation, inputStyles = null }) {
   const { isLoggedIn } = useContext(Context);
   const [visible, setVisible] = useState(false);
 
@@ -21,67 +14,78 @@ function TopBar({ navigation }) {
   return (
     <View>
       <Appbar style={styles.top}>
-        <Appbar.Action icon="menu" onPress={showModal} />
+        <Appbar.Action
+          color={inputStyles ? inputStyles.topButtons.color : "#340926"}
+          size={36}
+          icon="menu"
+          onPress={showModal}
+        />
       </Appbar>
       <Portal>
         <Modal
           visible={visible}
           onDismiss={hideModal}
-          contentContainerStyle={styles.modal}
+          contentContainerStyle={
+            inputStyles ? inputStyles.topModal : styles.modal
+          }
         >
-          <Button
-            onPress={() => {
-              goMap(navigation);
-              hideModal();
-            }}
-            disabled={!isLoggedIn}
-          >
-            MAP
-          </Button>
-          <Button
-            onPress={() => {
-              goUpload(navigation);
-              hideModal();
-            }}
-            disabled={!isLoggedIn}
-          >
-            UPLOAD
-          </Button>
-          <Button
-            onPress={() => {
-              goLogin(navigation);
-              hideModal();
-            }}
-            disabled={isLoggedIn}
-          >
-            LOGIN
-          </Button>
-          <Button
-            onPress={() => {
-              goRegister(navigation);
-              hideModal();
-            }}
-            disabled={isLoggedIn}
-          >
-            Register
-          </Button>
-          <Button
-            onPress={() => {
-              goAbout(navigation);
-              hideModal();
-            }}
-          >
-            ABOUT
-          </Button>
-          <Button
-            onPress={async () => {
-              await logoutUser();
-              hideModal();
-            }}
-            disabled={!isLoggedIn}
-          >
-            LOGOUT
-          </Button>
+          {isLoggedIn ? (
+            <>
+              <Button
+                onPress={() => {
+                  goMap(navigation);
+                  hideModal();
+                }}
+                disabled={!isLoggedIn}
+                color={inputStyles ? inputStyles.topButtons.color : "#340926"}
+              >
+                MAP
+              </Button>
+              <Button
+                onPress={() => {
+                  goUpload(navigation);
+                  hideModal();
+                }}
+                disabled={!isLoggedIn}
+                color={inputStyles ? inputStyles.topButtons.color : "#340926"}
+              >
+                UPLOAD
+              </Button>
+              <Button
+                onPress={async () => {
+                  await logoutUser();
+                  hideModal();
+                }}
+                disabled={!isLoggedIn}
+                color={inputStyles ? inputStyles.topButtons.color : "#340926"}
+              >
+                LOGOUT
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                onPress={() => {
+                  goLogin(navigation);
+                  hideModal();
+                }}
+                disabled={isLoggedIn}
+                color={inputStyles ? inputStyles.topButtons.color : "#340926"}
+              >
+                LOGIN
+              </Button>
+              <Button
+                onPress={() => {
+                  goRegister(navigation);
+                  hideModal();
+                }}
+                disabled={isLoggedIn}
+                color={inputStyles ? inputStyles.topButtons.color : "#340926"}
+              >
+                Register
+              </Button>
+            </>
+          )}
         </Modal>
       </Portal>
     </View>

@@ -1,9 +1,5 @@
 export { Context, Provider } from "./state";
 
-export function goAbout(navigation) {
-  navigation.navigate("About");
-}
-
 export function goLogin(navigation) {
   navigation.navigate("Login");
 }
@@ -16,28 +12,27 @@ export function goMap(navigation) {
   navigation.navigate("Map");
 }
 
-export function goRegister(navigation){
+export function goRegister(navigation) {
   navigation.navigate("Register");
 }
-
 
 export const emailValidator = (email: string) => {
   const re = /\S+@\S+\.\S+/;
 
-  if (!email || email.length <= 0) return 'Email cannot be empty.';
-  if (!re.test(email)) return 'Ooops! We need a valid email address.';
+  if (!email || email.length <= 0) return "Email cannot be empty.";
+  if (!re.test(email)) return "Ooops! We need a valid email address.";
 
-  return '';
+  return "";
 };
 
 export const passwordValidator = (password: string) => {
-  if (!password || password.length <= 0) return 'Password cannot be empty.';
+  if (!password || password.length <= 0) return "Password cannot be empty.";
 
-  return '';
+  return "";
 };
 
 export const nameValidator = (name: string) => {
-  if (!name || name.length <= 0) return 'Name cannot be empty.';
+  if (!name || name.length <= 0) return "User name cannot be empty.";
 
-  return '';
+  return "";
 };
