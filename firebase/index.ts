@@ -16,6 +16,7 @@ import { auth, db, storageRef } from "./config";
 import { UserData } from "../utils/types";
 import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
 
+// consider making createNewUser a cloud function
 async function createNewUser(
   email: string,
   password: string,
@@ -129,11 +130,11 @@ async function uploadDataToFirestore(data: object) {
   return docRef.id;
 }
 
-async function markArtAsSeen(artID: string, userId: string){
-  const docRef = doc(db, "seed_art", artID)
+async function markArtAsSeen(artID: string, userId: string) {
+  const docRef = doc(db, "seed_art", artID);
   await updateDoc(docRef, {
-    seenBy: arrayUnion(userId)
-  })
+    seenBy: arrayUnion(userId),
+  });
 }
 
 export {
