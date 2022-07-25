@@ -4,8 +4,8 @@ import { Dimensions, Image, StyleSheet, Pressable, View } from "react-native";
 import { uploadPhotoToStorage } from "../../firebase";
 import { Context } from "../../utils";
 
-function MapModal({ pic, index, func }) {
-  const { deviceArt, loggedInUser, pics } = useContext(Context);
+function MapModal({ pic, func }) {
+  const { deviceArt, setDeviceArt, loggedInUser, pics } = useContext(Context);
   const [isUploading, setIsUploading] = useState(false);
 
   async function upload() {
@@ -20,7 +20,9 @@ function MapModal({ pic, index, func }) {
       seenBy: [loggedInUser.id],
     };
 
-    deviceArt.splice(index, 1);
+    setDeviceArt(
+      deviceArt.filter((item: object) => item.filename !== pic.filename)
+    );
 
     await uploadPhotoToStorage(data, pic.url);
     setIsUploading(false);
@@ -28,7 +30,9 @@ function MapModal({ pic, index, func }) {
   }
 
   function remove() {
-    deviceArt.splice(index, 1);
+    setDeviceArt(
+      deviceArt.filter((item: object) => item.filename !== pic.filename)
+    );
     func();
   }
 

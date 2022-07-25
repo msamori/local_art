@@ -8,14 +8,26 @@ import {
   StyleSheet,
   View,
 } from "react-native";
+import { Modal, Portal } from "react-native-paper";
 import AppIntroSlider from "react-native-app-intro-slider";
-import { TopBar, TextInput } from "../components";
+import { UploadModal, TopBar, TextInput } from "../components";
 import { Context } from "../../utils";
 
 function Upload(props) {
-  const { currentLocation, deviceArt, pics } = useContext(Context);
+  const {
+    currentLocation,
+    deviceArt,
+    loggedInUser,
+    pics,
+    setLoggedInUser,
+    setDeviceArt,
+  } = useContext(Context);
 
   const [newDescription, setNewDescription] = useState("");
+
+  function hideModal() {
+    setLoggedInUser({ ...loggedInUser, showUploadModal: false });
+  }
 
   const renderItem = ({ item }) => {
     return (
@@ -43,7 +55,7 @@ function Upload(props) {
     };
     setNewDescription("");
     Keyboard.dismiss();
-    deviceArt.push(toAdd);
+    setDeviceArt([...deviceArt, toAdd]);
   }
 
   const keyExtractor = (item) => item.filename;
@@ -52,6 +64,15 @@ function Upload(props) {
   return (
     <View style={styles.container}>
       <TopBar navigation={props.navigation} inputStyles={styles} />
+      <Portal>
+        <Modal
+          visible={loggedInUser.showUploadModal}
+          onDismiss={hideModal}
+          contentContainerStyle={styles.modal}
+        >
+          <UploadModal />
+        </Modal>
+      </Portal>
       <AppIntroSlider
         keyExtractor={keyExtractor}
         renderItem={renderItem}
@@ -102,6 +123,12 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height * 0.25,
     position: "absolute",
     top: Dimensions.get("window").height * 0.7,
+  },
+  modal: {
+    width: Dimensions.get("window").width * 0.6,
+    position: "absolute",
+    top: Dimensions.get("window").height * 0.075,
+    left: Dimensions.get("window").width * 0.2,
   },
   selectedPic: {
     resizeMode: "contain",

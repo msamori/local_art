@@ -10,6 +10,7 @@ interface UserData {
   email: string;
   lastLogin?: number;
   lastLogout?: number;
+  showUploadModal: boolean;
 }
 type ArtPic = {
   id: string;
