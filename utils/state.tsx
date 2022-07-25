@@ -186,6 +186,7 @@ const Provider = ({ children }) => {
     setDeviceArt,
     currentLocation,
     isLoggedIn,
+    setLoggedInUser,
     loading,
     locationPermission,
     mediaPermission,

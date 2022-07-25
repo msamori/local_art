@@ -12,11 +12,9 @@ function Map(props) {
 
   const [visible, setVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState({});
-  const [selectedIndex, setSelectedIndex] = useState(-1);
 
-  function showModal(item, idx) {
+  function showModal(item) {
     setSelectedImage(item);
-    setSelectedIndex(idx);
     setVisible(true);
   }
 
@@ -42,11 +40,7 @@ function Map(props) {
           onDismiss={hideModal}
           contentContainerStyle={styles.modal}
         >
-          <MapModal
-            pic={selectedImage}
-            index={selectedIndex}
-            func={hideModal}
-          />
+          <MapModal pic={selectedImage} func={hideModal} />
         </Modal>
       </Portal>
       <MapView

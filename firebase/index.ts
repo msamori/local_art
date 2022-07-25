@@ -54,6 +54,7 @@ async function writeUserDataInFirestore(
       userName,
       email,
       lastLogin: Date.now(),
+      showUploadModal: true,
     };
 
     const docRef = doc(db, "users", uid);
@@ -137,11 +138,19 @@ async function markArtAsSeen(artID: string, userId: string) {
   });
 }
 
+async function neverShowModalAgain(userId: string) {
+  const docRef = doc(db, "users", userId);
+  await updateDoc(docRef, {
+    showUploadModal: false,
+  });
+}
+
 export {
   createNewUser,
   getLoggedInUserData,
   loginUser,
   logoutUser,
   markArtAsSeen,
+  neverShowModalAgain,
   uploadPhotoToStorage,
 };
