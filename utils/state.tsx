@@ -4,14 +4,19 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { getLoggedInUserData } from "../firebase";
 import { auth, db } from "../firebase/config";
-import { collection, query, onSnapshot, DocumentData } from "firebase/firestore";
+import {
+  collection,
+  query,
+  onSnapshot,
+  DocumentData,
+} from "firebase/firestore";
 import { ContextType, Props, PhonePic, UserData } from "./types";
 
-const Context = createContext< ContextType | undefined>(undefined);
+const Context = createContext<ContextType | undefined>(undefined);
 
-function useLocalArtContext(): ContextType{
-  const context = useContext(Context)
-  if (context === undefined){
+function useLocalArtContext(): ContextType {
+  const context = useContext(Context);
+  if (context === undefined) {
     throw Error(
       "Context muse be used inside of a Provider, " +
         "otherwise it will not function correctly."
@@ -21,16 +26,15 @@ function useLocalArtContext(): ContextType{
   return context;
 }
 
-const Provider = ({ children }:Props ) => {
-
+const Provider = ({ children }: Props) => {
   const emptyUser: UserData = {
     id: "",
     userName: "",
     email: "",
     lastLogin: 0,
     lastLogout: 0,
-    showUploadModal: true
-  }
+    showUploadModal: true,
+  };
 
   const [art, setArt] = useState<object[]>([]);
   const [pics, setPics] = useState<PhonePic[]>([]);
@@ -54,7 +58,8 @@ const Provider = ({ children }:Props ) => {
     const hasPermission = await Location.requestForegroundPermissionsAsync();
     if (hasPermission.status === "granted") {
       setLocationPermission(true);
-      let location: Location.LocationObject = await Location.getCurrentPositionAsync({});
+      let location: Location.LocationObject =
+        await Location.getCurrentPositionAsync({});
       setCurrentLocation(location);
       setMapRegion({
         latitude: location.coords.latitude,
@@ -147,16 +152,17 @@ const Provider = ({ children }:Props ) => {
     for (let i = 0; i < assets.length; i++) {
       let assetInformation = await MediaLibrary.getAssetInfoAsync(assets[i]);
       let selectedPic: PhonePic = {
+        createdBy: loggedInUser.userName,
         filename: assetInformation.filename,
         url: assetInformation.uri,
         timeCreated: assetInformation.creationTime,
         timeModified: assetInformation.modificationTime,
         description: "",
         latitude: 40.85209694527278,
-    longitude: -73.94126596326808,
+        longitude: -73.94126596326808,
       };
 
-      if (assetInformation.location !== undefined){
+      if (assetInformation.location !== undefined) {
         selectedPic.latitude = assetInformation.location.latitude;
         selectedPic.longitude = assetInformation.location.longitude;
       }

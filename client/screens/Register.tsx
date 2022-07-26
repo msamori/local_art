@@ -4,11 +4,14 @@ import { Text, Headline } from "react-native-paper";
 import { createNewUser } from "../../firebase";
 import { Button, TextInput, TopBar } from "../components";
 import { emailValidator, nameValidator, passwordValidator } from "../../utils";
+import { useNavigation } from "@react-navigation/native";
 
-function Register(props) {
+function Register() {
   const [userName, setUserName] = useState({ value: "", error: "" });
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
+
+  const navigation = useNavigation();
 
   async function onRegisterPress() {
     const userNameError = nameValidator(userName.value);
@@ -30,7 +33,7 @@ function Register(props) {
 
   return (
     <View style={styles.container}>
-      <TopBar navigation={props.navigation} />
+      <TopBar />
       <Headline style={styles.title}> Local Art </Headline>
       <View style={styles.inputs}>
         <TextInput
@@ -72,7 +75,7 @@ function Register(props) {
         </Button>
         <View style={styles.row}>
           <Text> Have an account? </Text>
-          <TouchableOpacity onPress={() => props.navigation.navigate("Login")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
             <Text style={styles.link}>Sign in</Text>
           </TouchableOpacity>
         </View>

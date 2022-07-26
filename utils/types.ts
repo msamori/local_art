@@ -18,6 +18,7 @@ type ContextType = {
 
 type PhonePic = {
   filename: string;
+  createdBy: string;
   url: string;
   timeCreated?: number;
   timeModified?: number;
@@ -44,7 +45,7 @@ type UserData = {
   lastLogin: number;
   lastLogout: number;
   showUploadModal: boolean;
-}
+};
 type ArtPic = {
   id?: string;
   addedAt: number;
