@@ -13,7 +13,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { auth, db, storageRef } from "./config";
-import { UserData } from "../utils/types";
+import { UserData, ArtPic } from "../utils/types";
 import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
 
 // consider making createNewUser a cloud function
@@ -54,6 +54,7 @@ async function writeUserDataInFirestore(
       userName,
       email,
       lastLogin: Date.now(),
+      lastLogout: 0,
       showUploadModal: true,
     };
 
@@ -68,7 +69,14 @@ async function getLoggedInUserData(userId: string) {
   const docRef = doc(db, "users", userId);
   const docSnap = await getDoc(docRef);
   const docData = docSnap.data();
-  const userData = new Object(docData);
+  const userData: UserData = {
+    id: userId,
+    userName: docData.userName,
+    email: docData.email,
+    lastLogin: docData.lastLogin,
+    lastLogout: docData.lastLogout,
+    showUploadModal: docData.showUploadModal,
+  };
   return userData;
 }
 
@@ -108,7 +116,7 @@ async function logoutUser() {
   }
 }
 
-async function uploadPhotoToStorage(data: object, uri: string) {
+async function uploadPhotoToStorage(data: ArtPic, uri: string) {
   try {
     const DOC_ID = await uploadDataToFirestore(data);
     const response = await fetch(uri);
@@ -119,7 +127,6 @@ async function uploadPhotoToStorage(data: object, uri: string) {
     await uploadBytesResumable(imageRef, blob);
     const downloadURL = await getDownloadURL(imageRef);
     data.url = downloadURL;
-    data.addedAt = Date.now();
     await setDoc(doc(db, "seed_art", DOC_ID), data);
   } catch (error) {
     console.error("error adding photo to storage:", error);

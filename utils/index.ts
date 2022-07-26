@@ -1,4 +1,4 @@
-export { Context, Provider } from "./state";
+export { Provider, useLocalArtContext } from "./state";
 
 export function goLogin(navigation) {
   navigation.navigate("Login");
