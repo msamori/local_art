@@ -6,7 +6,7 @@ import { MapModal, TopBar } from "../components";
 import { useLocalArtContext } from "../../utils";
 import { markArtAsSeen } from "../../firebase";
 
-function Map(props) {
+function Map() {
   const { art, loading, loggedInUser, mapRegion, deviceArt, setMapRegion } =
     useLocalArtContext();
 
@@ -33,7 +33,7 @@ function Map(props) {
 
   return (
     <View style={styles.container}>
-      <TopBar navigation={props.navigation} />
+      <TopBar />
       <Portal>
         <Modal
           visible={visible}

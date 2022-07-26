@@ -4,10 +4,13 @@ import { Text, Headline } from "react-native-paper";
 import { loginUser } from "../../firebase";
 import { Button, TextInput, TopBar } from "../components";
 import { emailValidator, passwordValidator } from "../../utils";
+import { useNavigation } from "@react-navigation/native";
 
-function Login(props) {
+function Login() {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
+
+  const navigation = useNavigation();
 
   async function onLoginPress() {
     const emailError = emailValidator(email.value);
@@ -26,7 +29,7 @@ function Login(props) {
 
   return (
     <View style={styles.container}>
-      <TopBar navigation={props.navigation} />
+      <TopBar />
       <Headline style={styles.title}> Local Art </Headline>
       <View style={styles.inputs}>
         <TextInput
@@ -55,9 +58,7 @@ function Login(props) {
         </Button>
         <View style={styles.row}>
           <Text> Don't have an account? </Text>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate("Register")}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
             <Text style={styles.link}>Sign up</Text>
           </TouchableOpacity>
         </View>

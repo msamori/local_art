@@ -9,13 +9,15 @@ import {
   goUpload,
 } from "../../utils";
 import { logoutUser } from "../../firebase";
+import { useNavigation } from "@react-navigation/native";
 
-function TopBar({ navigation, inputStyles = null }) {
+function TopBar({ inputStyles = null }) {
   const { isLoggedIn } = useLocalArtContext();
   const [visible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
+  const navigation = useNavigation();
 
   return (
     <View>

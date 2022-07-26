@@ -12,9 +12,9 @@ import { Modal, Portal } from "react-native-paper";
 import AppIntroSlider from "react-native-app-intro-slider";
 import { UploadModal, TopBar, TextInput } from "../components";
 import { useLocalArtContext } from "../../utils";
-import { PhonePic, Props } from "../../utils/types";
+import { PhonePic } from "../../utils/types";
 
-function Upload(props) {
+function Upload() {
   const {
     currentLocation,
     deviceArt,
@@ -64,7 +64,7 @@ function Upload(props) {
 
   return (
     <View style={styles.container}>
-      <TopBar navigation={props.navigation} inputStyles={styles} />
+      <TopBar inputStyles={styles} />
       <Portal>
         <Modal
           visible={loggedInUser.showUploadModal}
@@ -91,7 +91,7 @@ function Upload(props) {
         ref={sliderEl}
       />
       <TextInput
-        label="Description"
+        placeholder="Description"
         returnKeyType="done"
         onChangeText={(text) => setNewDescription(text)}
         value={newDescription}
