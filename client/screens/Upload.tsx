@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -11,7 +11,8 @@ import {
 import { Modal, Portal } from "react-native-paper";
 import AppIntroSlider from "react-native-app-intro-slider";
 import { UploadModal, TopBar, TextInput } from "../components";
-import { Context } from "../../utils";
+import { useLocalArtContext } from "../../utils";
+import { PhonePic, Props } from "../../utils/types";
 
 function Upload(props) {
   const {
@@ -21,7 +22,7 @@ function Upload(props) {
     pics,
     setLoggedInUser,
     setDeviceArt,
-  } = useContext(Context);
+  } = useLocalArtContext();
 
   const [newDescription, setNewDescription] = useState("");
 
@@ -38,19 +39,19 @@ function Upload(props) {
             addToMap(item);
           }}
         >
-          <Image source={{ uri: item.uri }} style={styles.selectedPic} />
+          <Image source={{ uri: item.url }} style={styles.selectedPic} />
         </Pressable>
       </View>
     );
   };
 
-  function addToMap(pic) {
-    const toAdd = {
+  function addToMap(pic: PhonePic) {
+    const toAdd: PhonePic = {
       filename: pic.filename,
       description: newDescription,
       latitude: pic.latitude || currentLocation.coords.latitude,
       longitude: pic.longitude || currentLocation.coords.longitude,
-      url: pic.uri,
+      url: pic.url,
       pinColor: "yellow",
     };
     setNewDescription("");

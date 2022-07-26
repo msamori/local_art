@@ -1,11 +1,17 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Appbar, Button, Modal, Portal } from "react-native-paper";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { Context, goLogin, goMap, goRegister, goUpload } from "../../utils";
+import {
+  useLocalArtContext,
+  goLogin,
+  goMap,
+  goRegister,
+  goUpload,
+} from "../../utils";
 import { logoutUser } from "../../firebase";
 
 function TopBar({ navigation, inputStyles = null }) {
-  const { isLoggedIn } = useContext(Context);
+  const { isLoggedIn } = useLocalArtContext();
   const [visible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);

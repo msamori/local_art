@@ -1,14 +1,14 @@
 import MapView from "react-native-maps";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Modal, Portal } from "react-native-paper";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { MapModal, TopBar } from "../components";
-import { Context } from "../../utils";
+import { useLocalArtContext } from "../../utils";
 import { markArtAsSeen } from "../../firebase";
 
 function Map(props) {
   const { art, loading, loggedInUser, mapRegion, deviceArt, setMapRegion } =
-    useContext(Context);
+    useLocalArtContext();
 
   const [visible, setVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState({});
@@ -66,7 +66,7 @@ function Map(props) {
                   pic.pinColor = "green";
                   markArtAsSeen(pic.id, loggedInUser.id);
                 }
-                showModal(pic, idx);
+                showModal(pic);
               }}
             />
           );
@@ -85,7 +85,7 @@ function Map(props) {
                 draggedMarker(e.nativeEvent.coordinate, idx);
               }}
               onPress={() => {
-                showModal(pic, idx);
+                showModal(pic);
               }}
             />
           );

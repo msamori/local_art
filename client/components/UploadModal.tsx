@@ -1,11 +1,11 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Checkbox, Text } from "react-native-paper";
 import { Dimensions, Pressable, StyleSheet, View } from "react-native";
-import { Context } from "../../utils";
+import { useLocalArtContext } from "../../utils";
 import { neverShowModalAgain } from "../../firebase";
 
 function UploadModal() {
-  const { loggedInUser, setLoggedInUser } = useContext(Context);
+  const { loggedInUser, setLoggedInUser } = useLocalArtContext();
   const [checked, setChecked] = useState(false);
 
   function okay() {

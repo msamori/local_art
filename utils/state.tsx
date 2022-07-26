@@ -1,21 +1,44 @@
 import * as Location from "expo-location";
 import * as MediaLibrary from "expo-media-library";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { getLoggedInUserData } from "../firebase";
 import { auth, db } from "../firebase/config";
-import { collection, query, onSnapshot } from "firebase/firestore";
+import { collection, query, onSnapshot, DocumentData } from "firebase/firestore";
+import { ContextType, Props, PhonePic, UserData } from "./types";
 
-const Context = createContext();
+const Context = createContext< ContextType | undefined>(undefined);
 
-const Provider = ({ children }) => {
-  const [art, setArt] = useState([]);
-  const [pics, setPics] = useState([]);
-  const [deviceArt, setDeviceArt] = useState([]);
+function useLocalArtContext(): ContextType{
+  const context = useContext(Context)
+  if (context === undefined){
+    throw Error(
+      "Context muse be used inside of a Provider, " +
+        "otherwise it will not function correctly."
+    );
+  }
+
+  return context;
+}
+
+const Provider = ({ children }:Props ) => {
+
+  const emptyUser: UserData = {
+    id: "",
+    userName: "",
+    email: "",
+    lastLogin: 0,
+    lastLogout: 0,
+    showUploadModal: true
+  }
+
+  const [art, setArt] = useState<object[]>([]);
+  const [pics, setPics] = useState<PhonePic[]>([]);
+  const [deviceArt, setDeviceArt] = useState<PhonePic[]>([]);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [loggedInUser, setLoggedInUser] = useState({});
+  const [loggedInUser, setLoggedInUser] = useState<UserData>(emptyUser);
   const [locationPermission, setLocationPermission] = useState(false);
   const [mediaPermission, setMediaPermission] = useState(false);
   const [mapRegion, setMapRegion] = useState({
@@ -25,25 +48,13 @@ const Provider = ({ children }) => {
     longitudeDelta: 0.001,
   });
 
-  const [currentLocation, setCurrentLocation] = useState({
-    coords: {
-      accuracy: 0,
-      altitude: 0,
-      altitudeAccuracy: 0,
-      heading: 0,
-      latitude: 0,
-      longitude: 0,
-      speed: 0,
-    },
-    mocked: false,
-    timestamp: 0,
-  });
+  const [currentLocation, setCurrentLocation] = useState({});
 
   const checkLocationPermission = async () => {
     const hasPermission = await Location.requestForegroundPermissionsAsync();
     if (hasPermission.status === "granted") {
       setLocationPermission(true);
-      let location = await Location.getCurrentPositionAsync({});
+      let location: Location.LocationObject = await Location.getCurrentPositionAsync({});
       setCurrentLocation(location);
       setMapRegion({
         latitude: location.coords.latitude,
@@ -88,7 +99,7 @@ const Provider = ({ children }) => {
           setLoading(false);
         } else {
           console.log("currentUserListener: no user logged in.");
-          setLoggedInUser({});
+          setLoggedInUser(emptyUser);
           setIsLoggedIn(false);
           setLoading(false);
         }
@@ -102,14 +113,15 @@ const Provider = ({ children }) => {
   function artListener() {
     try {
       const q = query(collection(db, "seed_art"));
-      let cloudArray = [];
+      let cloudArray: DocumentData[] = [];
       onSnapshot(q, (querySnapshot) => {
         setArt([]);
         querySnapshot.forEach((doc) => {
           const observation = doc.data();
           observation.id = doc.id;
           observation.pinColor = "green";
-          cloudArray.push(observation);
+          const obsObj = new Object(observation);
+          cloudArray.push(obsObj);
         });
         setArt(cloudArray);
         cloudArray = [];
@@ -134,14 +146,20 @@ const Provider = ({ children }) => {
 
     for (let i = 0; i < assets.length; i++) {
       let assetInformation = await MediaLibrary.getAssetInfoAsync(assets[i]);
-      let selectedPic = {
+      let selectedPic: PhonePic = {
         filename: assetInformation.filename,
-        uri: assetInformation.uri,
+        url: assetInformation.uri,
         timeCreated: assetInformation.creationTime,
         timeModified: assetInformation.modificationTime,
-        latitude: assetInformation.location.latitude,
-        longitude: assetInformation.location.longitude,
+        description: "",
+        latitude: 40.85209694527278,
+    longitude: -73.94126596326808,
       };
+
+      if (assetInformation.location !== undefined){
+        selectedPic.latitude = assetInformation.location.latitude;
+        selectedPic.longitude = assetInformation.location.longitude;
+      }
 
       picArray.push(selectedPic);
     }
@@ -174,7 +192,7 @@ const Provider = ({ children }) => {
   function cleanUp() {
     setLocationPermission(false);
     setMediaPermission(false);
-    setLoggedInUser({});
+    setLoggedInUser(emptyUser);
     setArt([]);
     setPics([]);
     setLoading(true);
@@ -199,4 +217,4 @@ const Provider = ({ children }) => {
   return <Context.Provider value={context}>{children}</Context.Provider>;
 };
 
-export { Context, Provider };
+export { Provider, useLocalArtContext };

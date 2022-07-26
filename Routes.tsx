@@ -1,13 +1,12 @@
-import { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Context } from "./utils";
+import { useLocalArtContext } from "./utils";
 import { Login, Map, Upload, Register } from "./client/screens";
 
 function Routes() {
   const Stack = createNativeStackNavigator();
 
-  const { loading, isLoggedIn } = useContext(Context);
+  const { loading, isLoggedIn } = useLocalArtContext();
 
   const navOptions = {
     headerShown: false,

@@ -1,27 +1,34 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { ActivityIndicator, Text } from "react-native-paper";
 import { Dimensions, Image, StyleSheet, Pressable, View } from "react-native";
 import { uploadPhotoToStorage } from "../../firebase";
-import { Context } from "../../utils";
+import { useLocalArtContext } from "../../utils";
+import { PhonePic } from "../../utils/types";
 
-function MapModal({ pic, func }) {
-  const { deviceArt, setDeviceArt, loggedInUser, pics } = useContext(Context);
+type Props = {
+  pic: PhonePic;
+  func(): void;
+};
+
+function MapModal({ pic, func }: Props) {
+  const { deviceArt, setDeviceArt, loggedInUser } = useLocalArtContext();
   const [isUploading, setIsUploading] = useState(false);
 
   async function upload() {
     setIsUploading(true);
 
     let data = {
-      filename: pic.filename,
+      addedAt: Date.now(),
       description: pic.description,
       latitude: pic.latitude,
       longitude: pic.longitude,
       createdBy: loggedInUser.userName,
       seenBy: [loggedInUser.id],
+      url: "",
     };
 
     setDeviceArt(
-      deviceArt.filter((item: object) => item.filename !== pic.filename)
+      deviceArt.filter((item: PhonePic) => item.filename !== pic.filename)
     );
 
     await uploadPhotoToStorage(data, pic.url);
@@ -31,7 +38,7 @@ function MapModal({ pic, func }) {
 
   function remove() {
     setDeviceArt(
-      deviceArt.filter((item: object) => item.filename !== pic.filename)
+      deviceArt.filter((item: PhonePic) => item.filename !== pic.filename)
     );
     func();
   }
