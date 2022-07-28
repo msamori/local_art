@@ -6,11 +6,11 @@ import { getLoggedInUserData } from "../firebase";
 import { auth, db } from "../firebase/config";
 import {
   collection,
-  query,
-  onSnapshot,
   DocumentData,
+  onSnapshot,
+  query,
 } from "firebase/firestore";
-import { ContextType, Props, PhonePic, UserData } from "./types";
+import { ContextType, PhonePic, Props, UserData } from "./types";
 
 const Context = createContext<ContextType | undefined>(undefined);
 
