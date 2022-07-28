@@ -1,5 +1,16 @@
 import { ReactNode } from "react";
 
+type ArtPic = {
+  id?: string;
+  addedAt: number;
+  createdBy: string;
+  description: string;
+  latitude: number;
+  seenBy: string[];
+  longitude: number;
+  url: string;
+};
+
 type ContextType = {
   art: object[];
   deviceArt: PhonePic[];
@@ -38,6 +49,7 @@ type Region = {
   latitudeDelta: number;
   longitudeDelta: number;
 };
+
 type UserData = {
   id: string;
   userName: string;
@@ -46,15 +58,6 @@ type UserData = {
   lastLogout: number;
   showUploadModal: boolean;
 };
-type ArtPic = {
-  id?: string;
-  addedAt: number;
-  createdBy: string;
-  description: string;
-  latitude: number;
-  seenBy: string[];
-  longitude: number;
-  url: string;
-};
 
-export { ArtPic, ContextType, Props, PhonePic, UserData, Region };
+
+export { ArtPic, ContextType, PhonePic, Props, UserData, Region };

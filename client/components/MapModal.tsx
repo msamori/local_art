@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ActivityIndicator, Text } from "react-native-paper";
-import { Dimensions, Image, StyleSheet, Pressable, View } from "react-native";
+import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import { uploadPhotoToStorage } from "../../firebase";
 import { useLocalArtContext } from "../../utils";
 import { PhonePic } from "../../utils/types";
@@ -84,9 +84,6 @@ const styles = StyleSheet.create({
     margin: 0.5,
     alignSelf: "center",
     alignContent: "center",
-  },
-  buttonContainer: {
-    width: Dimensions.get("window").width * 0.6,
   },
   container: {
     flex: 1,

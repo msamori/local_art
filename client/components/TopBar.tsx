@@ -18,7 +18,7 @@ type OptionalStyle = {
     topModal: object;
 }
 
-function TopBar(inputStyles?: OptionalStyle) {
+function TopBar({inputStyles = null}) {
   const { isLoggedIn } = useLocalArtContext();
   const [visible, setVisible] = useState(false);
 
