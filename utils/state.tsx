@@ -1,16 +1,16 @@
 import * as Location from "expo-location";
 import * as MediaLibrary from "expo-media-library";
+import { Region } from "react-native-maps";
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { getLoggedInUserData } from "../firebase";
 import { auth, db } from "../firebase/config";
 import {
   collection,
-  DocumentData,
   onSnapshot,
   query,
 } from "firebase/firestore";
-import { ContextType, PhonePic, Props, UserData } from "./types";
+import { ArtPic, ContextType, PhonePic, Props, UserData } from "./types";
 
 const Context = createContext<ContextType | undefined>(undefined);
 
@@ -36,7 +36,7 @@ const Provider = ({ children }: Props) => {
     showUploadModal: true,
   };
 
-  const [art, setArt] = useState<object[]>([]);
+  const [art, setArt] = useState<ArtPic[]>([]);
   const [pics, setPics] = useState<PhonePic[]>([]);
   const [deviceArt, setDeviceArt] = useState<PhonePic[]>([]);
 
@@ -45,14 +45,25 @@ const Provider = ({ children }: Props) => {
   const [loggedInUser, setLoggedInUser] = useState<UserData>(emptyUser);
   const [locationPermission, setLocationPermission] = useState(false);
   const [mediaPermission, setMediaPermission] = useState(false);
-  const [mapRegion, setMapRegion] = useState({
+  const [mapRegion, setMapRegion] = useState<Region>({
     latitude: 40.85209694527278,
     longitude: -73.94126596326808,
     latitudeDelta: 0.01,
     longitudeDelta: 0.001,
   });
 
-  const [currentLocation, setCurrentLocation] = useState({});
+  const [currentLocation, setCurrentLocation] = useState<Location.LocationObject>({
+    coords: {
+      latitude: 0,
+      longitude: 0,
+      altitude: 0 || null,
+      accuracy: 0,
+      altitudeAccuracy: 0,
+      heading: 0,
+      speed: 0
+    },
+    timestamp: 0
+  });
 
   const checkLocationPermission = async () => {
     const hasPermission = await Location.requestForegroundPermissionsAsync();
@@ -118,15 +129,14 @@ const Provider = ({ children }: Props) => {
   function artListener() {
     try {
       const q = query(collection(db, "Local Art"));
-      let cloudArray: DocumentData[] = [];
+      let cloudArray: any[] = [];
       onSnapshot(q, (querySnapshot) => {
         setArt([]);
         querySnapshot.forEach((doc) => {
           const observation = doc.data();
           observation.id = doc.id;
           observation.pinColor = "green";
-          const obsObj = new Object(observation);
-          cloudArray.push(obsObj);
+          cloudArray.push(observation);
         });
         setArt(cloudArray);
         cloudArray = [];

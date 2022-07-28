@@ -1,9 +1,10 @@
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { useState } from "react";
 import { Modal, Portal } from "react-native-paper";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { MapModal, TopBar } from "../components";
 import { useLocalArtContext } from "../../utils";
+import { PhonePic } from "../../utils/types";
 import { markArtAsSeen } from "../../firebase";
 
 function Map() {
@@ -11,7 +12,7 @@ function Map() {
     useLocalArtContext();
 
   const [visible, setVisible] = useState(false);
-  const [selectedImage, setSelectedImage] = useState({});
+  const [selectedImage, setSelectedImage] = useState<PhonePic>();
 
   function showModal(item) {
     setSelectedImage(item);
@@ -22,7 +23,7 @@ function Map() {
     setVisible(false);
   }
 
-  function draggedMarker(coordinates, index) {
+  function draggedMarker(coordinates: object, index: number) {
     deviceArt[index].latitude = coordinates.latitude;
     deviceArt[index].longitude = coordinates.longitude;
   }
@@ -54,7 +55,7 @@ function Map() {
         {art.map((pic, idx) => {
           if (!pic.seenBy.includes(loggedInUser.id)) pic.pinColor = "blue";
           return (
-            <MapView.Marker
+            <Marker
               pinColor={pic.pinColor}
               key={idx}
               coordinate={{
@@ -73,7 +74,7 @@ function Map() {
         })}
         {deviceArt.map((pic, idx) => {
           return (
-            <MapView.Marker
+            <Marker
               pinColor={pic.pinColor}
               key={pic.url}
               coordinate={{

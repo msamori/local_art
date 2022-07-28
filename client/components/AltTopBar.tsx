@@ -11,7 +11,7 @@ import {
 import { logoutUser } from "../../firebase";
 import { useNavigation } from "@react-navigation/native";
 
-function TopBar() {
+function AltTopBar() {
   const { isLoggedIn } = useLocalArtContext();
   const [visible, setVisible] = useState(false);
 
@@ -23,7 +23,7 @@ function TopBar() {
     <View>
       <Appbar style={styles.top}>
         <Appbar.Action
-          color={"#340926"}
+          color={"#F3F7D4"}
           size={36}
           icon="menu"
           onPress={showModal}
@@ -43,7 +43,7 @@ function TopBar() {
                   hideModal();
                 }}
                 disabled={!isLoggedIn}
-                color={"#340926"}
+                color={"#F3F7D4"}
               >
                 MAP
               </Button>
@@ -53,7 +53,7 @@ function TopBar() {
                   hideModal();
                 }}
                 disabled={!isLoggedIn}
-                color={"#340926"}
+                color={"#F3F7D4"}
               >
                 UPLOAD
               </Button>
@@ -63,7 +63,7 @@ function TopBar() {
                   hideModal();
                 }}
                 disabled={!isLoggedIn}
-                color={"#340926"}
+                color={"#F3F7D4"}
               >
                 LOGOUT
               </Button>
@@ -76,7 +76,7 @@ function TopBar() {
                   hideModal();
                 }}
                 disabled={isLoggedIn}
-                color={"#340926"}
+                color={"#F3F7D4"}
               >
                 LOGIN
               </Button>
@@ -86,7 +86,7 @@ function TopBar() {
                   hideModal();
                 }}
                 disabled={isLoggedIn}
-                color={"#340926"}
+                color={"#F3F7D4"}
               >
                 Register
               </Button>
@@ -98,7 +98,7 @@ function TopBar() {
   );
 }
 
-export { TopBar };
+export { AltTopBar };
 
 const styles = StyleSheet.create({
   modal: {
