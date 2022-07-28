@@ -4,13 +4,12 @@ import {
   Image,
   Keyboard,
   Pressable,
-  SafeAreaView,
   StyleSheet,
   View,
 } from "react-native";
 import { Modal, Portal } from "react-native-paper";
 import AppIntroSlider from "react-native-app-intro-slider";
-import { UploadModal, TopBar, TextInput } from "../components";
+import { UploadModal, AltTopBar, TextInput } from "../components";
 import { useLocalArtContext } from "../../utils";
 import { PhonePic } from "../../utils/types";
 
@@ -30,7 +29,7 @@ function Upload() {
     setLoggedInUser({ ...loggedInUser, showUploadModal: false });
   }
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item }:any) => {
     return (
       <View style={styles.container}>
         <Pressable
@@ -47,6 +46,7 @@ function Upload() {
 
   function addToMap(pic: PhonePic) {
     const toAdd: PhonePic = {
+      createdBy: "",
       filename: pic.filename,
       description: newDescription,
       latitude: pic.latitude || currentLocation.coords.latitude,
@@ -59,12 +59,11 @@ function Upload() {
     setDeviceArt([...deviceArt, toAdd]);
   }
 
-  const keyExtractor = (item) => item.filename;
-  const sliderEl = useRef(null);
+  const keyExtractor = (item: any) => item.filename;
 
   return (
     <View style={styles.container}>
-      <TopBar inputStyles={styles} />
+      <AltTopBar />
       <Portal>
         <Modal
           visible={loggedInUser.showUploadModal}
@@ -77,18 +76,8 @@ function Upload() {
       <AppIntroSlider
         keyExtractor={keyExtractor}
         renderItem={renderItem}
-        renderPagination={(activeIndex) => (
-          <RenderPagination
-            data={pics}
-            activeIndex={activeIndex}
-            slider={sliderEl.current}
-            onIntroCompleted={() => {
-              console.log("complete");
-            }}
-          />
-        )}
+        renderPagination={() =>(<></>)}
         data={pics}
-        ref={sliderEl}
       />
       <TextInput
         placeholder="Description"
@@ -103,12 +92,6 @@ function Upload() {
 }
 
 const styles = StyleSheet.create({
-  bold: {
-    fontWeight: "bold",
-    color: "#F3F7D4",
-    margin: 0.5,
-    textAlign: "center",
-  },
   container: {
     flex: 1,
     backgroundColor: "black",
@@ -136,58 +119,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height * 0.6,
   },
-  paginationContainer: {
-    bottom: 250,
-    display: "none",
-    left: 10,
-    right: 10,
-  },
-  paginationDots: {
-    height: 16,
-    margin: 16,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginHorizontal: 4,
-  },
-  topModal: {
-    position: "absolute",
-    left: 100,
-    right: 100,
-    top: 50,
-  },
-  topButtons: {
-    color: "#F3F7D4",
-  },
 });
 
-const RenderPagination = ({ activeIndex, slider, data, onIntroCompleted }) => {
-  return (
-    <View style={styles.paginationContainer}>
-      <SafeAreaView>
-        <View style={styles.paginationDots}>
-          {data.length > 1 &&
-            data.map((_, i) => (
-              <Pressable
-                key={i}
-                style={[
-                  styles.dot,
-                  i === activeIndex
-                    ? { backgroundColor: "white" }
-                    : { backgroundColor: "rgba(0, 0, 0, 0.2)" },
-                ]}
-                onPress={() => slider?.goToSlide(i, true)}
-              />
-            ))}
-        </View>
-      </SafeAreaView>
-    </View>
-  );
-};
 
 export { Upload };

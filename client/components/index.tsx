@@ -1,3 +1,4 @@
+export { AltTopBar } from "./AltTopBar";
 export { TopBar } from "./TopBar";
 export { MapModal } from "./MapModal";
 export { Button } from "./Button";

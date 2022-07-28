@@ -1,4 +1,6 @@
 import { ReactNode } from "react";
+import { Region } from "react-native-maps";
+import * as Location from "expo-location";
 
 type ArtPic = {
   id?: string;
@@ -9,22 +11,23 @@ type ArtPic = {
   seenBy: string[];
   longitude: number;
   url: string;
+  pinColor?: string;
 };
 
 type ContextType = {
-  art: object[];
+  art: ArtPic[];
   deviceArt: PhonePic[];
   setDeviceArt(art: PhonePic[]): void;
-  currentLocation: object;
+  currentLocation: Location.LocationObject;
   isLoggedIn: boolean;
   setLoggedInUser(user: UserData): void;
   loading: boolean;
   locationPermission: boolean;
   mediaPermission: boolean;
   loggedInUser: UserData;
-  mapRegion: object;
-  setMapRegion(region: object): void;
-  pics: object[];
+  mapRegion: Region;
+  setMapRegion(region: Region): void;
+  pics: PhonePic[];
 };
 
 type PhonePic = {
@@ -41,13 +44,6 @@ type PhonePic = {
 
 type Props = {
   children?: ReactNode;
-};
-
-type Region = {
-  latitude: number;
-  longitude: number;
-  latitudeDelta: number;
-  longitudeDelta: number;
 };
 
 type UserData = {

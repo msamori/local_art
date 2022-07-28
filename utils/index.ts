@@ -1,18 +1,18 @@
 export { Provider, useLocalArtContext } from "./state";
 
-export function goLogin(navigation) {
+export function goLogin(navigation: any) {
   navigation.navigate("Login");
 }
 
-export function goUpload(navigation) {
+export function goUpload(navigation: any) {
   navigation.navigate("Upload");
 }
 
-export function goMap(navigation) {
+export function goMap(navigation: any) {
   navigation.navigate("Map");
 }
 
-export function goRegister(navigation) {
+export function goRegister(navigation: any) {
   navigation.navigate("Register");
 }
 
