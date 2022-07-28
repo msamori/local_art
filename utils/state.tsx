@@ -117,7 +117,7 @@ const Provider = ({ children }: Props) => {
 
   function artListener() {
     try {
-      const q = query(collection(db, "seed_art"));
+      const q = query(collection(db, "Local Art"));
       let cloudArray: DocumentData[] = [];
       onSnapshot(q, (querySnapshot) => {
         setArt([]);
