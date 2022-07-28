@@ -11,7 +11,14 @@ import {
 import { logoutUser } from "../../firebase";
 import { useNavigation } from "@react-navigation/native";
 
-function TopBar({ inputStyles = null }) {
+type OptionalStyle = {
+    topButtons: {
+      color: string;
+    },
+    topModal: object;
+}
+
+function TopBar(inputStyles?: OptionalStyle) {
   const { isLoggedIn } = useLocalArtContext();
   const [visible, setVisible] = useState(false);
 
