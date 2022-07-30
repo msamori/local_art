@@ -12,7 +12,7 @@ import { logoutUser } from "../../firebase";
 import { useNavigation } from "@react-navigation/native";
 
 function TopBar() {
-  const { isLoggedIn } = useLocalArtContext();
+  const { isLoggedIn, setIsLoggedIn } = useLocalArtContext();
   const [visible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);
@@ -59,6 +59,7 @@ function TopBar() {
               </Button>
               <Button
                 onPress={async () => {
+                  setIsLoggedIn(false);
                   await logoutUser();
                   hideModal();
                 }}

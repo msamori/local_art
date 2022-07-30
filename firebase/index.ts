@@ -125,7 +125,7 @@ async function logoutUser() {
       return;
     }
   } catch (error) {
-    console.error("logoutUser error:", logoutUser);
+    console.error("logoutUser error:", error);
   }
 }
 

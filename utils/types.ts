@@ -26,6 +26,7 @@ type ContextType = {
   mediaPermission: boolean;
   loggedInUser: UserData;
   mapRegion: Region;
+  setIsLoggedIn: any;
   setMapRegion(region: Region): void;
   pics: PhonePic[];
 };
