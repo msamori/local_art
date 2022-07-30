@@ -116,6 +116,7 @@ const Provider = ({ children }: Props) => {
         } else {
           console.log("currentUserListener: no user logged in.");
           setLoggedInUser(emptyUser);
+          setArt([]);
           setIsLoggedIn(false);
           setLoading(false);
         }
@@ -127,6 +128,7 @@ const Provider = ({ children }: Props) => {
   }
 
   function artListener() {
+    if (!loggedInUser) return;
     try {
       const q = query(collection(db, "Local Art"));
       let cloudArray: any[] = [];
@@ -140,6 +142,7 @@ const Provider = ({ children }: Props) => {
         });
         setArt(cloudArray);
         cloudArray = [];
+
       });
     } catch (error) {
       console.error("artListener error:", error);
@@ -190,13 +193,6 @@ const Provider = ({ children }: Props) => {
     };
   }, []);
 
-  useEffect(() => {
-    artListener();
-    return () => {
-      setArt([]);
-    };
-  }, [loggedInUser]);
-
   async function init() {
     await checkLocationPermission();
     await checkMediaPermission();
@@ -220,6 +216,7 @@ const Provider = ({ children }: Props) => {
     setDeviceArt,
     currentLocation,
     isLoggedIn,
+    setIsLoggedIn,
     setLoggedInUser,
     loading,
     locationPermission,
