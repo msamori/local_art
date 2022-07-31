@@ -1,18 +1,56 @@
 import MapView, { Marker } from "react-native-maps";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, Portal } from "react-native-paper";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { MapModal, TopBar } from "../components";
 import { useLocalArtContext } from "../../utils";
-import { PhonePic } from "../../utils/types";
+import { ArtPic, PhonePic } from "../../utils/types";
 import { markArtAsSeen } from "../../firebase";
+import { db } from "../../firebase/config";
+import {
+  collection,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
 
 function Map() {
-  const { art, loading, loggedInUser, mapRegion, deviceArt, setMapRegion } =
+  const { loading, loggedInUser, mapRegion, deviceArt, setMapRegion } =
     useLocalArtContext();
+    const [art, setArt] = useState<ArtPic[]>([]);
 
   const [visible, setVisible] = useState(false);
+  const [localLoading, setLocalLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<PhonePic>();
+
+  function artListener() {
+    // if (!loggedInUser) return;
+    try {
+      const q = query(collection(db, "Local Art"));
+      let cloudArray: any[] = [];
+      onSnapshot(q, (querySnapshot) => {
+        setArt([]);
+        querySnapshot.forEach((doc) => {
+          const observation = doc.data();
+          observation.id = doc.id;
+          observation.pinColor = "green";
+          cloudArray.push(observation);
+        });
+        setArt(cloudArray);
+        cloudArray = [];
+        setLocalLoading(false);
+
+      });
+    } catch (error) {
+      console.error("artListener error:", error);
+    }
+  }
+
+  useEffect(()=>{
+    artListener();
+    return ()=>{
+      setArt([])
+    }
+  }, [])
 
   function showModal(item) {
     setSelectedImage(item);
@@ -28,7 +66,7 @@ function Map() {
     deviceArt[index].longitude = coordinates.longitude;
   }
 
-  if (loading) {
+  if (loading || localLoading) {
     return <></>;
   }
 
@@ -104,7 +142,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
     position: "absolute",
-    top: Dimensions.get("window").height * 0.05,
+    top: 0,
   },
   modal: {
     width: Dimensions.get("window").width * 0.6,

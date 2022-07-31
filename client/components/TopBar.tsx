@@ -12,7 +12,7 @@ import { logoutUser } from "../../firebase";
 import { useNavigation } from "@react-navigation/native";
 
 function TopBar() {
-  const { isLoggedIn, setIsLoggedIn } = useLocalArtContext();
+  const { isLoggedIn, mediaPermission } = useLocalArtContext();
   const [visible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);
@@ -52,14 +52,13 @@ function TopBar() {
                   goUpload(navigation);
                   hideModal();
                 }}
-                disabled={!isLoggedIn}
+                disabled={!isLoggedIn  || !mediaPermission}
                 color={"#340926"}
               >
                 UPLOAD
               </Button>
               <Button
                 onPress={async () => {
-                  setIsLoggedIn(false);
                   await logoutUser();
                   hideModal();
                 }}

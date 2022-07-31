@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import * as MediaLibrary from "expo-media-library";
 import {
   Dimensions,
   Image,
@@ -18,16 +19,60 @@ function Upload() {
     currentLocation,
     deviceArt,
     loggedInUser,
-    pics,
     setLoggedInUser,
     setDeviceArt,
   } = useLocalArtContext();
 
   const [newDescription, setNewDescription] = useState("");
+  const [pics, setPics] = useState<PhonePic[]>([]);
+
+  async function getPhotos() {
+    const albumName = "Camera";
+    const getAlbum = await MediaLibrary.getAlbumAsync(albumName);
+
+    const { assets } = await MediaLibrary.getAssetsAsync({
+      first: 10,
+      album: getAlbum,
+      sortBy: ["creationTime"],
+      mediaType: ["photo"],
+    });
+
+    let picArray = [];
+
+    for (let i = 0; i < assets.length; i++) {
+      let assetInformation = await MediaLibrary.getAssetInfoAsync(assets[i]);
+      let selectedPic: PhonePic = {
+        createdBy: loggedInUser.userName,
+        filename: assetInformation.filename,
+        url: assetInformation.uri,
+        timeCreated: assetInformation.creationTime,
+        timeModified: assetInformation.modificationTime,
+        description: "",
+        latitude: 40.85209694527278,
+        longitude: -73.94126596326808,
+      };
+
+      if (assetInformation.location !== undefined) {
+        selectedPic.latitude = assetInformation.location.latitude;
+        selectedPic.longitude = assetInformation.location.longitude;
+      }
+
+      picArray.push(selectedPic);
+    }
+
+    setPics([...pics, ...picArray]);
+  }
 
   function hideModal() {
     setLoggedInUser({ ...loggedInUser, showUploadModal: false });
   }
+
+  useEffect(()=>{
+    getPhotos();
+    return ()=>{
+      setPics([])
+    }
+  }, [])
 
   const renderItem = ({ item }:any) => {
     return (
