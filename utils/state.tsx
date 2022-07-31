@@ -4,13 +4,22 @@ import { Region } from "react-native-maps";
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { getLoggedInUserData } from "../firebase";
-import { auth, db } from "../firebase/config";
-import {
-  collection,
-  onSnapshot,
-  query,
-} from "firebase/firestore";
-import { ArtPic, ContextType, PhonePic, Props, UserData } from "./types";
+import { auth } from "../firebase/config";
+import { PhonePic, Props, UserData } from "./types";
+
+type ContextType = {
+  deviceArt: PhonePic[];
+  setDeviceArt(art: PhonePic[]): void;
+  currentLocation: Location.LocationObject;
+  isLoggedIn: boolean;
+  setLoggedInUser(user: UserData): void;
+  loading: boolean;
+  locationPermission: boolean;
+  mediaPermission: boolean;
+  loggedInUser: UserData;
+  mapRegion: Region;
+  setMapRegion(region: Region): void;
+};
 
 const Context = createContext<ContextType | undefined>(undefined);
 
@@ -36,8 +45,6 @@ const Provider = ({ children }: Props) => {
     showUploadModal: true,
   };
 
-  const [art, setArt] = useState<ArtPic[]>([]);
-  const [pics, setPics] = useState<PhonePic[]>([]);
   const [deviceArt, setDeviceArt] = useState<PhonePic[]>([]);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -116,7 +123,6 @@ const Provider = ({ children }: Props) => {
         } else {
           console.log("currentUserListener: no user logged in.");
           setLoggedInUser(emptyUser);
-          setArt([]);
           setIsLoggedIn(false);
           setLoading(false);
         }
@@ -125,65 +131,6 @@ const Provider = ({ children }: Props) => {
     } catch (error) {
       console.error("currentUserListener error:", error);
     }
-  }
-
-  function artListener() {
-    if (!loggedInUser) return;
-    try {
-      const q = query(collection(db, "Local Art"));
-      let cloudArray: any[] = [];
-      onSnapshot(q, (querySnapshot) => {
-        setArt([]);
-        querySnapshot.forEach((doc) => {
-          const observation = doc.data();
-          observation.id = doc.id;
-          observation.pinColor = "green";
-          cloudArray.push(observation);
-        });
-        setArt(cloudArray);
-        cloudArray = [];
-
-      });
-    } catch (error) {
-      console.error("artListener error:", error);
-    }
-  }
-
-  async function getPhotos() {
-    const albumName = "Camera";
-    const getAlbum = await MediaLibrary.getAlbumAsync(albumName);
-
-    const { assets } = await MediaLibrary.getAssetsAsync({
-      first: 10,
-      album: getAlbum,
-      sortBy: ["creationTime"],
-      mediaType: ["photo"],
-    });
-
-    let picArray = [];
-
-    for (let i = 0; i < assets.length; i++) {
-      let assetInformation = await MediaLibrary.getAssetInfoAsync(assets[i]);
-      let selectedPic: PhonePic = {
-        createdBy: loggedInUser.userName,
-        filename: assetInformation.filename,
-        url: assetInformation.uri,
-        timeCreated: assetInformation.creationTime,
-        timeModified: assetInformation.modificationTime,
-        description: "",
-        latitude: 40.85209694527278,
-        longitude: -73.94126596326808,
-      };
-
-      if (assetInformation.location !== undefined) {
-        selectedPic.latitude = assetInformation.location.latitude;
-        selectedPic.longitude = assetInformation.location.longitude;
-      }
-
-      picArray.push(selectedPic);
-    }
-
-    setPics([...pics, ...picArray]);
   }
 
   useEffect(() => {
@@ -197,21 +144,16 @@ const Provider = ({ children }: Props) => {
     await checkLocationPermission();
     await checkMediaPermission();
     await currentUserListener();
-    await artListener();
-    await getPhotos();
   }
 
   function cleanUp() {
     setLocationPermission(false);
     setMediaPermission(false);
     setLoggedInUser(emptyUser);
-    setArt([]);
-    setPics([]);
     setLoading(true);
   }
 
   const context = {
-    art,
     deviceArt,
     setDeviceArt,
     currentLocation,
@@ -224,7 +166,6 @@ const Provider = ({ children }: Props) => {
     loggedInUser,
     mapRegion,
     setMapRegion,
-    pics,
   };
 
   return <Context.Provider value={context}>{children}</Context.Provider>;
