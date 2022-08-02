@@ -1,6 +1,5 @@
 export { AltTopBar } from "./AltTopBar";
-export { TopBar } from "./TopBar";
-export { MapModal } from "./MapModal";
 export { Button } from "./Button";
+export { MapModal } from "./MapModal";
 export { TextInput } from "./TextInput";
 export { UploadModal } from "./UploadModal";
