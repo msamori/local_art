@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Modal, Portal } from "react-native-paper";
 import AppIntroSlider from "react-native-app-intro-slider";
-import { UploadModal, AltTopBar, TextInput } from "../components";
+import { UploadModal, TextInput } from "../components";
 import { useLocalArtContext } from "../../utils";
 import { PhonePic } from "../../utils/types";
 
@@ -78,8 +78,9 @@ function Upload() {
     return (
       <View style={styles.container}>
         <Pressable
+        android_ripple={{color: 'blue', borderless: false, foreground: true}}
           disabled={!newDescription}
-          onLongPress={() => {
+          onPress={() => {
             addToMap(item);
           }}
         >
@@ -108,7 +109,6 @@ function Upload() {
 
   return (
     <View style={styles.container}>
-      <AltTopBar />
       <Portal>
         <Modal
           visible={loggedInUser.showUploadModal}
@@ -139,19 +139,13 @@ function Upload() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "#F3F7d4",
     flexDirection: "column",
   },
   input: {
-    bottom: Dimensions.get("window").height * 0.35,
+    bottom: Dimensions.get("window").height * 0.2,
     width: Dimensions.get("window").width * 0.9,
     alignSelf: "center",
-  },
-  map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height * 0.25,
-    position: "absolute",
-    top: Dimensions.get("window").height * 0.7,
   },
   modal: {
     width: Dimensions.get("window").width * 0.6,
@@ -163,6 +157,8 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height * 0.6,
+    marginTop: 20,
+    marginBottom: 20,
   },
 });
 

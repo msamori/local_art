@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Text, Headline } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { loginUser } from "../../firebase";
-import { Button, TextInput, TopBar } from "../components";
+import { Button, TextInput } from "../components";
 import { emailValidator, passwordValidator } from "../../utils";
 import { useNavigation } from "@react-navigation/native";
 
@@ -29,8 +29,6 @@ function Login() {
 
   return (
     <View style={styles.container}>
-      <TopBar />
-      <Headline style={styles.title}> Local Art </Headline>
       <View style={styles.inputs}>
         <TextInput
           label="Email"
@@ -87,9 +85,5 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     marginTop: 4,
-  },
-  title: {
-    top: Dimensions.get("window").height * 0.2,
-    padding: 10,
   },
 });

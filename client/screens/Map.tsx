@@ -2,7 +2,7 @@ import MapView, { Marker } from "react-native-maps";
 import { useEffect, useState } from "react";
 import { Modal, Portal } from "react-native-paper";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { MapModal, TopBar } from "../components";
+import { MapModal } from "../components";
 import { useLocalArtContext } from "../../utils";
 import { ArtPic, PhonePic } from "../../utils/types";
 import { markArtAsSeen } from "../../firebase";
@@ -23,7 +23,6 @@ function Map() {
   const [selectedImage, setSelectedImage] = useState<PhonePic>();
 
   function artListener() {
-    // if (!loggedInUser) return;
     try {
       const q = query(collection(db, "Local Art"));
       let cloudArray: any[] = [];
@@ -72,7 +71,6 @@ function Map() {
 
   return (
     <View style={styles.container}>
-      <TopBar />
       <Portal>
         <Modal
           visible={visible}
@@ -140,24 +138,15 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
     position: "absolute",
     top: 0,
+    bottom: 0,
   },
   modal: {
     width: Dimensions.get("window").width * 0.6,
     position: "absolute",
     top: Dimensions.get("window").height * 0.075,
     left: Dimensions.get("window").width * 0.2,
-  },
-  topModal: {
-    position: "absolute",
-    left: 100,
-    right: 100,
-    top: 50,
-  },
-  topButtons: {
-    color: "#F3F7D4",
   },
 });
 

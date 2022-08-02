@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "local_art",
+    "name": "Local Art",
     "slug": "local_art",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -27,9 +27,11 @@
       },
       "config": {
         "googleMaps": {
-          "apiKey": "Enter_key_here"
+          "apiKey": "Add API Key here"
         }
-      }
+      },
+      "package": "com.msamori.local_art",
+      "permissions": ["READ_MEDIA_IMAGES", "ACCESS_MEDIA_LOCATION", "READ_EXTERNAL_STORAGE"]
     },
     "web": {
       "favicon": "./assets/favicon.png"

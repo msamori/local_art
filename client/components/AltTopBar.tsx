@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Appbar, Button, Modal, Portal } from "react-native-paper";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Appbar, Menu } from "react-native-paper";
+import { StatusBar} from "react-native";
 import {
   useLocalArtContext,
   goLogin,
@@ -9,114 +9,78 @@ import {
   goUpload,
 } from "../../utils";
 import { logoutUser } from "../../firebase";
-import { useNavigation } from "@react-navigation/native";
 
-function AltTopBar() {
+function AltTopBar({ navigation }) {
   const { isLoggedIn } = useLocalArtContext();
   const [visible, setVisible] = useState(false);
-
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
-  const navigation = useNavigation();
+  const openMenu = () => setVisible(true);
+  const closeMenu = () => setVisible(false);
 
   return (
-    <View>
-      <Appbar style={styles.top}>
-        <Appbar.Action
-          color={"#F3F7D4"}
-          size={36}
-          icon="menu"
-          onPress={showModal}
-        />
-      </Appbar>
-      <Portal>
-        <Modal
+      <Appbar.Header statusBarHeight={0}>
+        <StatusBar backgroundColor="#340926" barStyle="light-content"/>
+        <Appbar.Content title="Local Art" />
+        <Menu
           visible={visible}
-          onDismiss={hideModal}
-          contentContainerStyle={styles.modal}
+          onDismiss={closeMenu}
+          anchor={
+            <Appbar.Action
+              icon={visible ? "close" : "menu"}
+              color="white"
+              onPress={openMenu}
+            />
+          }
         >
           {isLoggedIn ? (
             <>
-              <Button
+              <Menu.Item
                 onPress={() => {
                   goMap(navigation);
-                  hideModal();
+                  closeMenu();
                 }}
+                title="Map"
                 disabled={!isLoggedIn}
-                color={"#F3F7D4"}
-              >
-                MAP
-              </Button>
-              <Button
+              />
+              <Menu.Item
                 onPress={() => {
                   goUpload(navigation);
-                  hideModal();
+                  closeMenu();
                 }}
+                title="Upload"
                 disabled={!isLoggedIn}
-                color={"#F3F7D4"}
-              >
-                UPLOAD
-              </Button>
-              <Button
+              />
+              <Menu.Item
                 onPress={async () => {
                   await logoutUser();
-                  hideModal();
+                  closeMenu();
                 }}
+                title="Logout"
                 disabled={!isLoggedIn}
-                color={"#F3F7D4"}
-              >
-                LOGOUT
-              </Button>
+              />
             </>
           ) : (
             <>
-              <Button
-                onPress={() => {
+              <Menu.Item
+                onPress={async () => {
                   goLogin(navigation);
-                  hideModal();
+                  closeMenu();
                 }}
+                title="Login"
                 disabled={isLoggedIn}
-                color={"#F3F7D4"}
-              >
-                LOGIN
-              </Button>
-              <Button
-                onPress={() => {
+              />
+              <Menu.Item
+                onPress={async () => {
                   goRegister(navigation);
-                  hideModal();
+                  closeMenu();
                 }}
+                title="Register"
                 disabled={isLoggedIn}
-                color={"#F3F7D4"}
-              >
-                Register
-              </Button>
+              />
             </>
           )}
-        </Modal>
-      </Portal>
-    </View>
+        </Menu>
+      </Appbar.Header>
   );
 }
 
 export { AltTopBar };
-
-const styles = StyleSheet.create({
-  modal: {
-    position: "absolute",
-    left: 100,
-    right: 100,
-    top: 50,
-  },
-  top: {
-    flex: 1,
-    justifyContent: "center",
-    position: "absolute",
-    backgroundColor: "transparent",
-    top: Dimensions.get("window").height * 0.06,
-    left: Dimensions.get("window").width * 0.03,
-    height: Dimensions.get("window").height * 0.05,
-    width: Dimensions.get("window").width * 0.11,
-    zIndex: 3,
-    elevation: 3,
-  },
-});

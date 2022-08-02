@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useLocalArtContext } from "./utils";
 import { Login, Map, Upload, Register } from "./client/screens";
+import { AltTopBar } from "./client/components";
 
 function Routes() {
   const Stack = createNativeStackNavigator();
@@ -9,8 +10,7 @@ function Routes() {
   const { loading, isLoggedIn } = useLocalArtContext();
 
   const navOptions = {
-    headerShown: false,
-    gestureEnabled: true,
+    header: (props) => <AltTopBar {... props} />
   };
 
   if (loading) {
