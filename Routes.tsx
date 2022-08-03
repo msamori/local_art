@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useLocalArtContext } from "./utils";
-import { Login, Map, Upload, Register } from "./client/screens";
+import { Login, Map, Register } from "./client/screens";
 import { AltTopBar } from "./client/components";
 
 function Routes() {
@@ -23,7 +23,6 @@ function Routes() {
         {isLoggedIn ? (
           <>
             <Stack.Screen name="Map" component={Map} />
-            <Stack.Screen name="Upload" component={Upload} />
           </>
         ) : (
           <>

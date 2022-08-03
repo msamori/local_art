@@ -1,5 +1,5 @@
 import * as Location from "expo-location";
-import * as MediaLibrary from "expo-media-library";
+import * as ImagePicker from 'expo-image-picker';
 import { Region } from "react-native-maps";
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
@@ -45,20 +45,6 @@ const Provider = ({ children }: Props) => {
     showUploadModal: true,
   };
 
-  const [deviceArt, setDeviceArt] = useState<PhonePic[]>([]);
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [loggedInUser, setLoggedInUser] = useState<UserData>(emptyUser);
-  const [locationPermission, setLocationPermission] = useState(false);
-  const [mediaPermission, setMediaPermission] = useState(false);
-  const [mapRegion, setMapRegion] = useState<Region>({
-    latitude: 40.85209694527278,
-    longitude: -73.94126596326808,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.001,
-  });
-
   const [currentLocation, setCurrentLocation] = useState<Location.LocationObject>({
     coords: {
       latitude: 0,
@@ -71,6 +57,21 @@ const Provider = ({ children }: Props) => {
     },
     timestamp: 0
   });
+
+  const [deviceArt, setDeviceArt] = useState<PhonePic[]>([]);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loggedInUser, setLoggedInUser] = useState<UserData>(emptyUser);
+  const [locationPermission, setLocationPermission] = useState(false);
+  const [mediaPermission, setMediaPermission] = useState(false);
+  const [mapRegion, setMapRegion] = useState<Region>({
+    latitude: currentLocation.coords.latitude || 40.85209694527278,
+    longitude: currentLocation.coords.longitude || -73.94126596326808,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.001,
+  });
+
 
   const checkLocationPermission = async () => {
     const hasPermission = await Location.requestForegroundPermissionsAsync();
@@ -91,13 +92,13 @@ const Provider = ({ children }: Props) => {
   };
 
   async function checkMediaPermission() {
-    let permissionStatus = await MediaLibrary.getPermissionsAsync();
+    let permissionStatus = await ImagePicker.getMediaLibraryPermissionsAsync();
     if (permissionStatus.granted) {
       setMediaPermission(true);
       return true;
     }
 
-    permissionStatus = await MediaLibrary.requestPermissionsAsync();
+    permissionStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionStatus.granted) {
       setMediaPermission(true);

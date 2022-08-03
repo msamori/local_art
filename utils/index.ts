@@ -4,10 +4,6 @@ export function goLogin(navigation: any) {
   navigation.navigate("Login");
 }
 
-export function goUpload(navigation: any) {
-  navigation.navigate("Upload");
-}
-
 export function goMap(navigation: any) {
   navigation.navigate("Map");
 }

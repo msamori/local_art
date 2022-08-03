@@ -6,7 +6,6 @@ import {
   goLogin,
   goMap,
   goRegister,
-  goUpload,
 } from "../../utils";
 import { logoutUser } from "../../firebase";
 
@@ -39,14 +38,6 @@ function AltTopBar({ navigation }) {
                   closeMenu();
                 }}
                 title="Map"
-                disabled={!isLoggedIn}
-              />
-              <Menu.Item
-                onPress={() => {
-                  goUpload(navigation);
-                  closeMenu();
-                }}
-                title="Upload"
                 disabled={!isLoggedIn}
               />
               <Menu.Item

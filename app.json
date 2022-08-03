@@ -27,7 +27,7 @@
       },
       "config": {
         "googleMaps": {
-          "apiKey": "Add API Key here"
+          "apiKey": "API KEY HERE"
         }
       },
       "package": "com.msamori.local_art",
