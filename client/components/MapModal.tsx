@@ -28,7 +28,7 @@ function MapModal({ pic, func }: Props) {
     };
 
     setDeviceArt(
-      deviceArt.filter((item: PhonePic) => item.filename !== pic.filename)
+      deviceArt.filter((item: PhonePic) => item.url !== pic.url)
     );
 
     await uploadPhotoToStorage(data, pic.url);
@@ -38,7 +38,7 @@ function MapModal({ pic, func }: Props) {
 
   function remove() {
     setDeviceArt(
-      deviceArt.filter((item: PhonePic) => item.filename !== pic.filename)
+      deviceArt.filter((item: PhonePic) => item.url !== pic.url)
     );
     func();
   }
@@ -61,7 +61,7 @@ function MapModal({ pic, func }: Props) {
           </>
         ) : (
           <View style={styles.row}>
-            <Text style={styles.bold}>-{pic.createdBy}</Text>
+            <Text style={styles.bold}>  — {pic.createdBy}</Text>
           </View>
         )}
       </View>
@@ -73,21 +73,21 @@ function MapModal({ pic, func }: Props) {
 const styles = StyleSheet.create({
   bold: {
     fontWeight: "bold",
-    color: "#F3F7D4",
+    color: "white",
     margin: 0.5,
     textAlign: "center",
   },
   upload: {
     display: "flex",
     fontWeight: "bold",
-    color: "#B81484",
+    color: "white",
     margin: 0.5,
     alignSelf: "center",
     alignContent: "center",
   },
   container: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "#340926",
   },
   row: {
     flexDirection: "row",

@@ -1,8 +1,8 @@
 import MapView, { Marker } from "react-native-maps";
 import { useEffect, useState } from "react";
-import { Modal, Portal } from "react-native-paper";
+import { Appbar, Modal, Portal } from "react-native-paper";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { MapModal } from "../components";
+import { MapModal, PhotoSelector } from "../components";
 import { useLocalArtContext } from "../../utils";
 import { ArtPic, PhonePic } from "../../utils/types";
 import { markArtAsSeen } from "../../firebase";
@@ -19,6 +19,7 @@ function Map() {
     const [art, setArt] = useState<ArtPic[]>([]);
 
   const [visible, setVisible] = useState(false);
+  const [selectorVisible, setSelectorVisible] = useState(false);
   const [localLoading, setLocalLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<PhonePic>();
 
@@ -60,6 +61,14 @@ function Map() {
     setVisible(false);
   }
 
+  function showSelector() {
+    setSelectorVisible(true);
+  }
+
+  function hideSelector() {
+    setSelectorVisible(false);
+  }
+
   function draggedMarker(coordinates: object, index: number) {
     deviceArt[index].latitude = coordinates.latitude;
     deviceArt[index].longitude = coordinates.longitude;
@@ -79,7 +88,22 @@ function Map() {
         >
           <MapModal pic={selectedImage} func={hideModal} />
         </Modal>
+        <Modal
+          visible={selectorVisible}
+          onDismiss={hideSelector}
+          contentContainerStyle={styles.cameraModal}
+        >
+          <PhotoSelector func={hideSelector}/>
+        </Modal>
       </Portal>
+      <Appbar style={styles.top}>
+        <Appbar.Action
+          color={"#340926"}
+          size={36}
+          icon={selectorVisible ? "close" : "camera"}
+          onPress={()=> showSelector()}
+        />
+      </Appbar>
       <MapView
         style={styles.map}
         region={mapRegion}
@@ -147,6 +171,25 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: Dimensions.get("window").height * 0.075,
     left: Dimensions.get("window").width * 0.2,
+  },
+  cameraModal: {
+    width: Dimensions.get("window").width * 0.6,
+    height: Dimensions.get("window").height * 0.6,
+    position: "absolute",
+    top: Dimensions.get("window").height * 0.075,
+    left: Dimensions.get("window").width * 0.2,
+  },
+  top: {
+    flex: 1,
+    justifyContent: "center",
+    position: "absolute",
+    backgroundColor: "transparent",
+    top: Dimensions.get("window").height * 0.015,
+    left: Dimensions.get("window").width * 0.03,
+    height: Dimensions.get("window").height * 0.05,
+    width: Dimensions.get("window").width * 0.11,
+    zIndex: 3,
+    elevation: 3,
   },
 });
 
