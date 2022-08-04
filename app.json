@@ -4,12 +4,12 @@
     "slug": "local_art",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/favicon.png",
+    "icon": "./assets/ic_launcher_round.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/favicon.png",
+      "image": "./assets/blueno_splash-modified.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#f3f7d4"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,8 +22,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/favicon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/ic_launcher_round.png",
+        "backgroundColor": "#f3f7d4"
       },
       "config": {
         "googleMaps": {
@@ -34,7 +34,7 @@
       "permissions": ["READ_MEDIA_IMAGES", "ACCESS_MEDIA_LOCATION", "READ_EXTERNAL_STORAGE"]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/ic_launcher.png"
     }
   }
 }
