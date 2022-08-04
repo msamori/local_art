@@ -100,7 +100,7 @@ function Map() {
         <Appbar.Action
           color={"#340926"}
           size={36}
-          icon={selectorVisible ? "close" : "camera"}
+          icon={selectorVisible ? "close" : "image"}
           onPress={()=> showSelector()}
         />
       </Appbar>
