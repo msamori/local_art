@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/blueno_splash-modified.png",
       "resizeMode": "contain",
-      "backgroundColor": "#f3f7d4"
+      "backgroundColor": "#000000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,7 +23,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/ic_launcher_round.png",
-        "backgroundColor": "#f3f7d4"
+        "backgroundColor": "#000000"
       },
       "config": {
         "googleMaps": {
